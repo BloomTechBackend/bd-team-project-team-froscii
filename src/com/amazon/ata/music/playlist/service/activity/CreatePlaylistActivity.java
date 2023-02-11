@@ -1,10 +1,16 @@
 package com.amazon.ata.music.playlist.service.activity;
 
+import com.amazon.ata.aws.dynamodb.DynamoDbClientProvider;
+import com.amazon.ata.music.playlist.service.converters.ModelConverter;
+import com.amazon.ata.music.playlist.service.exceptions.InvalidAttributeChangeException;
 import com.amazon.ata.music.playlist.service.models.requests.CreatePlaylistRequest;
 import com.amazon.ata.music.playlist.service.models.results.CreatePlaylistResult;
 import com.amazon.ata.music.playlist.service.models.PlaylistModel;
 import com.amazon.ata.music.playlist.service.dynamodb.PlaylistDao;
 
+import com.amazon.ata.music.playlist.service.util.MusicPlaylistServiceUtils;
+import com.amazonaws.regions.Regions;
+import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
 import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.RequestHandler;
 import org.apache.logging.log4j.LogManager;
@@ -18,6 +24,7 @@ import org.apache.logging.log4j.Logger;
 public class CreatePlaylistActivity implements RequestHandler<CreatePlaylistRequest, CreatePlaylistResult> {
     private final Logger log = LogManager.getLogger();
     private final PlaylistDao playlistDao;
+    private boolean isLambda;
 
     /**
      * Instantiates a new CreatePlaylistActivity object.
@@ -26,6 +33,15 @@ public class CreatePlaylistActivity implements RequestHandler<CreatePlaylistRequ
      */
     public CreatePlaylistActivity(PlaylistDao playlistDao) {
         this.playlistDao = playlistDao;
+        this.isLambda = false;
+    }
+
+    /**
+     * For use by AWS Lambda, which requires a zero-argument constructor. I need some help here.
+     */
+    public CreatePlaylistActivity() {
+        this.playlistDao = new PlaylistDao(new DynamoDBMapper(DynamoDbClientProvider.getDynamoDBClient(Regions.US_WEST_2)));
+        this.isLambda = true;
     }
 
     /**
@@ -44,9 +60,26 @@ public class CreatePlaylistActivity implements RequestHandler<CreatePlaylistRequ
     @Override
     public CreatePlaylistResult handleRequest(final CreatePlaylistRequest createPlaylistRequest, Context context) {
         log.info("Received CreatePlaylistRequest {}", createPlaylistRequest);
-
-        return CreatePlaylistResult.builder()
-                .withPlaylist(new PlaylistModel())
+        String name = createPlaylistRequest.getName();
+        if (!MusicPlaylistServiceUtils.isValidString(name)) {
+            throw new InvalidAttributeChangeException("The given playlist name does not match our syntax rules.");
+        }
+        String id = MusicPlaylistServiceUtils.generatePlaylistId();
+        PlaylistModel playlistModel = new PlaylistModel.Builder()
+                .withTags(createPlaylistRequest.getTags())
+                .withName(name)
+                .withCustomerId(createPlaylistRequest.getCustomerId())
+                .withSongCount(0)
+                .withId(id)
                 .build();
+        CreatePlaylistResult result = CreatePlaylistResult.builder()
+                .withPlaylist(playlistModel)
+                .build();
+        // Convert the PlaylistModel into a Playlist
+        // Added to work with AWS Lambda. Again, I need help.
+        if (isLambda) {
+            playlistDao.savePlaylist(new ModelConverter().toPlaylist(playlistModel));
+        }
+        return result;
     }
 }

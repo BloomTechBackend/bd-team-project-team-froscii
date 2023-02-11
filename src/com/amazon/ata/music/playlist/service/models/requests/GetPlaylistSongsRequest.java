@@ -15,6 +15,10 @@ public class GetPlaylistSongsRequest {
         this.id = id;
         this.order = order;
     }
+    public GetPlaylistSongsRequest(String id, String order) {
+        this.id = id;
+        this.order = SongOrder.valueOf(order);
+    }
 
     public GetPlaylistSongsRequest(Builder builder) {
         this.id = builder.id;
@@ -79,7 +83,15 @@ public class GetPlaylistSongsRequest {
             this.order = orderToUse;
             return this;
         }
+        public Builder withOrder(String orderToUse) {
+            this.order = SongOrder.valueOf(orderToUse);
+            return this;
+        }
 
-        public GetPlaylistSongsRequest build() { return new GetPlaylistSongsRequest(this); }
+        public GetPlaylistSongsRequest build() {
+            if (this.order == null) {
+                this.order = SongOrder.DEFAULT;
+            }
+            return new GetPlaylistSongsRequest(this); }
     }
 }

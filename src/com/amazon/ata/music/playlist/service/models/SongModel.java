@@ -9,7 +9,6 @@ public class SongModel {
     private String title;
 
     public SongModel() {
-
     }
 
     public SongModel(Builder builder) {

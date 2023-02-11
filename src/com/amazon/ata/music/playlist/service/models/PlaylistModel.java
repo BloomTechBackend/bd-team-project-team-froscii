@@ -2,13 +2,14 @@ package com.amazon.ata.music.playlist.service.models;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 
 public class PlaylistModel {
     private String id;
     private String name;
     private String customerId;
     private int songCount;
-    private List<String> tags;
+    private Set<String> tags;
 
     public PlaylistModel() {
 
@@ -54,11 +55,11 @@ public class PlaylistModel {
         this.songCount = songCount;
     }
 
-    public List<String> getTags() {
+    public Set<String> getTags() {
         return tags;
     }
 
-    public void setTags(List<String> tags) {
+    public void setTags(Set<String> tags) {
         this.tags = tags;
     }
 
@@ -97,7 +98,7 @@ public class PlaylistModel {
         private String name;
         private String customerId;
         private int songCount;
-        private List<String> tags;
+        private Set<String> tags;
 
         public Builder withId(String idToUse) {
             this.id = idToUse;
@@ -119,7 +120,7 @@ public class PlaylistModel {
             return this;
         }
 
-        public Builder withTags(List<String> tagsToUse) {
+        public Builder withTags(Set<String> tagsToUse) {
             this.tags = tagsToUse;
             return this;
         }
