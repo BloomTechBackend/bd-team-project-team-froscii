@@ -76,7 +76,7 @@ public class CreatePlaylistActivity implements RequestHandler<CreatePlaylistRequ
                 .withPlaylist(playlistModel)
                 .build();
         // Convert the PlaylistModel into a Playlist
-        // Added to work with AWS Lambda. Again, I need help.
+        // Added to work with AWS Lambda. Again, I need help. A bit.
         if (isLambda) {
             playlistDao.savePlaylist(new ModelConverter().toPlaylist(playlistModel));
         }
