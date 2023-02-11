@@ -23,7 +23,7 @@ public class PlaylistDao {
     /**
      * Returns the {@link Playlist} corresponding to the specified id.
      *
-     * @param id the Playlist ID
+     * @param id the Playlist ID. Super cool.
      * @return the stored Playlist, or null if none was found.
      */
     public Playlist getPlaylist(String id) {
