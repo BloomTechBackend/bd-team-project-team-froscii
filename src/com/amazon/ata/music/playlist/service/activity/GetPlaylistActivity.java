@@ -15,6 +15,8 @@ import com.amazonaws.services.lambda.runtime.RequestHandler;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import javax.inject.Inject;
+
 /**
  * Implementation of the GetPlaylistActivity for the MusicPlaylistService's GetPlaylist API.
  *
@@ -29,15 +31,16 @@ public class GetPlaylistActivity implements RequestHandler<GetPlaylistRequest, G
      *
      * @param playlistDao PlaylistDao to access the playlist table.
      */
+    @Inject
     public GetPlaylistActivity(PlaylistDao playlistDao) {
         this.playlistDao = playlistDao;
     }
     /**
      * For use by AWS Lambda, which requires a zero-argument constructor.
      */
-    public GetPlaylistActivity() {
-        this.playlistDao = new PlaylistDao(new DynamoDBMapper(DynamoDbClientProvider.getDynamoDBClient(Regions.US_WEST_2)));
-    }
+    //public GetPlaylistActivity() {
+    //    this.playlistDao = new PlaylistDao(new DynamoDBMapper(DynamoDbClientProvider.getDynamoDBClient(Regions.US_WEST_2)));
+    //}
 
     /**
      * This method handles the incoming request by retrieving the playlist from the database.

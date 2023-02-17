@@ -16,6 +16,8 @@ import com.amazonaws.services.lambda.runtime.RequestHandler;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import javax.inject.Inject;
+
 /**
  * Implementation of the CreatePlaylistActivity for the MusicPlaylistService's CreatePlaylist API.
  *
@@ -31,6 +33,7 @@ public class CreatePlaylistActivity implements RequestHandler<CreatePlaylistRequ
      *
      * @param playlistDao PlaylistDao to access the playlists table.
      */
+    @Inject
     public CreatePlaylistActivity(PlaylistDao playlistDao) {
         this.playlistDao = playlistDao;
         this.isLambda = false;
@@ -39,10 +42,10 @@ public class CreatePlaylistActivity implements RequestHandler<CreatePlaylistRequ
     /**
      * For use by AWS Lambda, which requires a zero-argument constructor. I need some help here.
      */
-    public CreatePlaylistActivity() {
-        this.playlistDao = new PlaylistDao(new DynamoDBMapper(DynamoDbClientProvider.getDynamoDBClient(Regions.US_WEST_2)));
-        this.isLambda = true;
-    }
+    //public CreatePlaylistActivity() {
+    //    this.playlistDao = new PlaylistDao(new DynamoDBMapper(DynamoDbClientProvider.getDynamoDBClient(Regions.US_WEST_2)));
+    //    this.isLambda = true;
+    //}
 
     /**
      * This method handles the incoming request by persisting a new playlist

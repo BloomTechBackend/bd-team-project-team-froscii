@@ -15,6 +15,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.testng.mustache.Model;
 
+import javax.inject.Inject;
 import java.util.Collections;
 import java.util.List;
 
@@ -32,15 +33,16 @@ public class GetPlaylistSongsActivity implements RequestHandler<GetPlaylistSongs
      *
      * @param playlistDao PlaylistDao to access the playlist table.
      */
+    @Inject
     public GetPlaylistSongsActivity(PlaylistDao playlistDao) {
         this.playlistDao = playlistDao;
     }
     /**
      * For use by AWS Lambda, which requires a zero-argument constructor.
      */
-    public GetPlaylistSongsActivity() {
-        this.playlistDao = new PlaylistDao(new DynamoDBMapper(DynamoDbClientProvider.getDynamoDBClient(Regions.US_WEST_2)));
-    }
+    //public GetPlaylistSongsActivity() {
+    //    this.playlistDao = new PlaylistDao(new DynamoDBMapper(DynamoDbClientProvider.getDynamoDBClient(Regions.US_WEST_2)));
+    //}
 
     /**
      * This method handles the incoming request by retrieving the playlist from the database.
