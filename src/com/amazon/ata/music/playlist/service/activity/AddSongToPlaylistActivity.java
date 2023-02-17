@@ -1,5 +1,8 @@
 package com.amazon.ata.music.playlist.service.activity;
 
+import com.amazon.ata.music.playlist.service.converters.ModelConverter;
+import com.amazon.ata.music.playlist.service.dynamodb.models.AlbumTrack;
+import com.amazon.ata.music.playlist.service.dynamodb.models.Playlist;
 import com.amazon.ata.music.playlist.service.models.requests.AddSongToPlaylistRequest;
 import com.amazon.ata.music.playlist.service.models.results.AddSongToPlaylistResult;
 import com.amazon.ata.music.playlist.service.models.SongModel;
@@ -54,9 +57,19 @@ public class AddSongToPlaylistActivity implements RequestHandler<AddSongToPlayli
     @Override
     public AddSongToPlaylistResult handleRequest(final AddSongToPlaylistRequest addSongToPlaylistRequest, Context context) {
         log.info("Received AddSongToPlaylistRequest {} ", addSongToPlaylistRequest);
-
+        // Try to get an AlbumTrack from the Dao
+        // This should throw an exception if this track does not exist
+        AlbumTrack albumTrack = albumTrackDao.getAlbumTrack(addSongToPlaylistRequest.getAsin(),addSongToPlaylistRequest.getTrackNumber());
+        // Find the Playlist to add to
+        Playlist playlist = playlistDao.getPlaylist(addSongToPlaylistRequest.getId());
+        // Add that song to the playlist
+        playlist.addSong(albumTrack,true);
+        // FIXME: queueNext is not yet implemented, so test results should be 4/5
+        // Save the new playlist
+        playlistDao.savePlaylist(playlist);
+        // Return a songModelList based on the songList from this playlist in a result
         return AddSongToPlaylistResult.builder()
-                .withSongList(Collections.singletonList(new SongModel()))
+                .withSongList(new ModelConverter().toSongModelList(playlist.getSongList()))
                 .build();
     }
 }
