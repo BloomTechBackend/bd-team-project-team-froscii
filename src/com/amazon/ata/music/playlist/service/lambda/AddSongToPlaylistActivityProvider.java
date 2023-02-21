@@ -11,9 +11,7 @@ public class AddSongToPlaylistActivityProvider implements RequestHandler<AddSong
 
     private static ServiceComponent dagger;
 
-    public AddSongToPlaylistActivityProvider() {
-
-    }
+    public AddSongToPlaylistActivityProvider() {}
 
     @Override
     public AddSongToPlaylistResult handleRequest(final AddSongToPlaylistRequest addSongToPlaylistRequest, Context context) {

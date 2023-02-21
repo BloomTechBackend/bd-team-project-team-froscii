@@ -63,8 +63,9 @@ public class AddSongToPlaylistActivity implements RequestHandler<AddSongToPlayli
         // Find the Playlist to add to
         Playlist playlist = playlistDao.getPlaylist(addSongToPlaylistRequest.getId());
         // Add that song to the playlist
-        playlist.addSong(albumTrack,true);
-        // FIXME: queueNext is not yet implemented, so test results should be 4/5
+
+        playlist.addSong(albumTrack, !addSongToPlaylistRequest.isQueueNext());
+        // FIXME: I have no clue why this boolean ^ needs to be inverted!!!
         // Save the new playlist
         playlistDao.savePlaylist(playlist);
         // Return a songModelList based on the songList from this playlist in a result

@@ -40,14 +40,6 @@ public class CreatePlaylistActivity implements RequestHandler<CreatePlaylistRequ
     }
 
     /**
-     * For use by AWS Lambda, which requires a zero-argument constructor. I need some help here.
-     */
-    //public CreatePlaylistActivity() {
-    //    this.playlistDao = new PlaylistDao(new DynamoDBMapper(DynamoDbClientProvider.getDynamoDBClient(Regions.US_WEST_2)));
-    //    this.isLambda = true;
-    //}
-
-    /**
      * This method handles the incoming request by persisting a new playlist
      * with the provided playlist name and customer ID from the request.
      * <p>

@@ -21,7 +21,6 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.initMocks;
 
-// 4/5
 public class AddSongToPlaylistActivityTest {
     @Mock
     private PlaylistDao playlistDao;

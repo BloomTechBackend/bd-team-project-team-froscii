@@ -37,12 +37,6 @@ public class GetPlaylistSongsActivity implements RequestHandler<GetPlaylistSongs
     public GetPlaylistSongsActivity(PlaylistDao playlistDao) {
         this.playlistDao = playlistDao;
     }
-    /**
-     * For use by AWS Lambda, which requires a zero-argument constructor.
-     */
-    //public GetPlaylistSongsActivity() {
-    //    this.playlistDao = new PlaylistDao(new DynamoDBMapper(DynamoDbClientProvider.getDynamoDBClient(Regions.US_WEST_2)));
-    //}
 
     /**
      * This method handles the incoming request by retrieving the playlist from the database.

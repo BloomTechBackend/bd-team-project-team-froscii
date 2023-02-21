@@ -21,21 +21,21 @@ public class AlbumTrack {
     public void setAsin(String asin) {
         this.asin = asin;
     }
-    @DynamoDBRangeKey(attributeName = "trackNumber")
+    @DynamoDBRangeKey(attributeName = "track_number")
     public Integer getTrackNumber() {
         return trackNumber;
     }
     public void setTrackNumber(Integer integer) {
         this.trackNumber = integer;
     }
-    @DynamoDBAttribute(attributeName = "albumName")
+    @DynamoDBAttribute(attributeName = "album_name")
     public String getAlbumName() {
         return albumName;
     }
     public void setAlbumName(String newName) {
         albumName = newName;
     }
-    @DynamoDBAttribute(attributeName = "songTitle")
+    @DynamoDBAttribute(attributeName = "song_title")
     public String getSongTitle() {
         return songTitle;
     }
