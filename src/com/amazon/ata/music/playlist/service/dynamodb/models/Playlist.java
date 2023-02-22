@@ -23,6 +23,14 @@ public class Playlist {
     private String customerId;
     private Integer songCount;
     private Set<String> tags;
+//    // For some reason, DDB is making a songs list. We shall attempt to destroy it.
+//    private List songs;
+//    @DynamoDBAttribute(attributeName = "songs")
+//    public List getSongs() {
+//        return null;
+//    }
+//    public void setSongs(List l) {
+//    }
 
     @DynamoDBHashKey(attributeName = "id")
     public String getId() {
@@ -48,24 +56,10 @@ public class Playlist {
     @DynamoDBTypeConverted(converter = AlbumTrackLinkedListConverter.class)
     @DynamoDBAttribute(attributeName = "songList")
     public List<AlbumTrack> getSongList() {
-        return getSongs();
+        return getSongList(DEFAULT);
     }
-
-    public void setSongList(List<AlbumTrack> songList) {
-        this.songList = songList;
-    }
-
-    public void addSong(AlbumTrack albumTrack, boolean queueNext) {
-        if (queueNext) {
-            this.songList.add(albumTrack);
-        } else {
-            this.songList.add(0, albumTrack);
-        }
-    }
-    public List<AlbumTrack> getSongs() {
-        return getSongs(DEFAULT);
-    }
-    public List<AlbumTrack> getSongs(SongOrder order) {
+    public List<AlbumTrack> getSongList(SongOrder order) {
+        ensureSongList();
         switch (order) {
             case DEFAULT:
                 return songList;
@@ -79,6 +73,33 @@ public class Playlist {
                 return shuffledList;
             default:
                 return new ArrayList<>();
+        }
+    }
+
+    public void setSongList(List<AlbumTrack> songList) {
+        this.songList = songList;
+    }
+
+    public void addSong(AlbumTrack albumTrack, boolean queueNext) {
+        ensureSongList();
+        if (queueNext) {
+            this.songList.add(albumTrack);
+        } else {
+            this.songList.add(0, albumTrack);
+        }
+        songCount += 1;
+    }
+
+    /**
+     * Attempting to make sure this gets instantiated at a number of points.
+     * Very annoying.
+     * Not good code.
+     * But I need this to work.
+     */
+    private void ensureSongList() {
+        if (songList == null) {
+            songList = new ArrayList<>();
+            songCount = new Integer(0);
         }
     }
 }

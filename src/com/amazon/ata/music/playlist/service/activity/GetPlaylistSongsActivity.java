@@ -58,7 +58,7 @@ public class GetPlaylistSongsActivity implements RequestHandler<GetPlaylistSongs
         String id = getPlaylistSongsRequest.getId();
         List<SongModel> songModelList = new ModelConverter()
                 .toSongModelList(playlistDao.getPlaylist(id)
-                        .getSongs(getPlaylistSongsRequest
+                        .getSongList(getPlaylistSongsRequest
                                 .getOrder()));
 
         return GetPlaylistSongsResult.builder()

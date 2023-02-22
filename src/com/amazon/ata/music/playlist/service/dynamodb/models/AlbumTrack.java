@@ -14,6 +14,7 @@ public class AlbumTrack {
     private Integer trackNumber;
     private String albumName;
     private String songTitle;
+    public AlbumTrack(){}
     @DynamoDBHashKey(attributeName = "asin")
     public String getAsin() {
         return asin;
