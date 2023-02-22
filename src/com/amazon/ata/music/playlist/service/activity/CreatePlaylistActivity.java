@@ -26,7 +26,6 @@ import javax.inject.Inject;
 public class CreatePlaylistActivity implements RequestHandler<CreatePlaylistRequest, CreatePlaylistResult> {
     private final Logger log = LogManager.getLogger();
     private final PlaylistDao playlistDao;
-    private boolean isLambda;
 
     /**
      * Instantiates a new CreatePlaylistActivity object.
@@ -36,7 +35,6 @@ public class CreatePlaylistActivity implements RequestHandler<CreatePlaylistRequ
     @Inject
     public CreatePlaylistActivity(PlaylistDao playlistDao) {
         this.playlistDao = playlistDao;
-        this.isLambda = false;
     }
 
     /**
@@ -70,11 +68,7 @@ public class CreatePlaylistActivity implements RequestHandler<CreatePlaylistRequ
         CreatePlaylistResult result = CreatePlaylistResult.builder()
                 .withPlaylist(playlistModel)
                 .build();
-        // Convert the PlaylistModel into a Playlist
-        // Added to work with AWS Lambda. Again, I need help. A bit.
-        if (isLambda) {
-            playlistDao.savePlaylist(new ModelConverter().toPlaylist(playlistModel));
-        }
+        playlistDao.savePlaylist(new ModelConverter().toPlaylist(playlistModel));
         return result;
     }
 }

@@ -100,6 +100,7 @@ public class Playlist {
         if (songList == null) {
             songList = new ArrayList<>();
             songCount = new Integer(0);
+
         }
     }
 }

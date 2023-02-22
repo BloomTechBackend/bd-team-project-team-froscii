@@ -68,9 +68,11 @@ public class UpdatePlaylistActivity implements RequestHandler<UpdatePlaylistRequ
         }
         // Name is the only attribute that can be changed.
         playlistModel.setName(updatePlaylistRequest.getName());
+
         UpdatePlaylistResult result = UpdatePlaylistResult.builder()
                                     .withPlaylist(playlistModel)
                                     .build();
+        playlistDao.savePlaylist(new ModelConverter().toPlaylist(playlistModel));
         return result;
     }
 }

@@ -71,7 +71,6 @@ public class AddSongToPlaylistActivity implements RequestHandler<AddSongToPlayli
         if (albumTrack == null) {
             throw new AlbumTrackNotFoundException();
         }
-
         playlist.addSong(albumTrack, !addSongToPlaylistRequest.isQueueNext());
         // FIXME: I have no clue why this boolean ^ needs to be inverted!!!
         // Save the new playlist
