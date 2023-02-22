@@ -3,6 +3,8 @@ package com.amazon.ata.music.playlist.service.activity;
 import com.amazon.ata.music.playlist.service.converters.ModelConverter;
 import com.amazon.ata.music.playlist.service.dynamodb.models.AlbumTrack;
 import com.amazon.ata.music.playlist.service.dynamodb.models.Playlist;
+import com.amazon.ata.music.playlist.service.exceptions.AlbumTrackNotFoundException;
+import com.amazon.ata.music.playlist.service.exceptions.PlaylistNotFoundException;
 import com.amazon.ata.music.playlist.service.models.requests.AddSongToPlaylistRequest;
 import com.amazon.ata.music.playlist.service.models.results.AddSongToPlaylistResult;
 import com.amazon.ata.music.playlist.service.models.SongModel;
@@ -59,10 +61,16 @@ public class AddSongToPlaylistActivity implements RequestHandler<AddSongToPlayli
         log.info("Received AddSongToPlaylistRequest {} ", addSongToPlaylistRequest);
         // Try to get an AlbumTrack from the Dao
         // This should throw an exception if this track does not exist
-        AlbumTrack albumTrack = albumTrackDao.getAlbumTrack(addSongToPlaylistRequest.getAsin(),addSongToPlaylistRequest.getTrackNumber());
-        // Find the Playlist to add to
         Playlist playlist = playlistDao.getPlaylist(addSongToPlaylistRequest.getId());
         // Add that song to the playlist
+        if (playlist == null) {
+            throw new PlaylistNotFoundException();
+        }
+        AlbumTrack albumTrack = albumTrackDao.getAlbumTrack(addSongToPlaylistRequest.getAsin(),addSongToPlaylistRequest.getTrackNumber());
+        // Find the Playlist to add to
+        if (albumTrack == null) {
+            throw new AlbumTrackNotFoundException();
+        }
 
         playlist.addSong(albumTrack, !addSongToPlaylistRequest.isQueueNext());
         // FIXME: I have no clue why this boolean ^ needs to be inverted!!!
