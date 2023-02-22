@@ -53,6 +53,7 @@ public class Playlist {
     public void setTags(Set<String> tags) { this.tags = tags; }
 
     // PARTICIPANTS: You do not need to modify the songList getters/setters or annotations
+    // So many things have gone wrong, my goodness.
     @DynamoDBTypeConverted(converter = AlbumTrackLinkedListConverter.class)
     @DynamoDBAttribute(attributeName = "songList")
     public List<AlbumTrack> getSongList() {
