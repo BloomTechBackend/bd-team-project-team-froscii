@@ -1,4 +1,4 @@
-# [team name] Design Document
+# Team Froscii Design Document
 
 ## Instructions
 
@@ -13,11 +13,18 @@ italics)*
 this template for more guidance on the types of information to capture, and the
 level of detail to aim for.*
 
-## *Project Title* Design
+## *Froscii* Design
 
 ## 1. Problem Statement
 
-*Explain clearly what problem you are trying to solve.*
+There is an issue for people who have very little skill with drawing digitally 
+with a mouse, trackpad, or stylus who still want to design neat drawings. These 
+same people have very little space on their computers, but still like to keep art 
+stored locally. They are either poor or cheapskates.
+
+Introduce Froscii. With this, you can not only draw using text, which anyone 
+can do, but it will also be converted into a finished product with seamless 
+lines and style.
 
 
 ## 2. Top Questions to Resolve in Review

@@ -1,4 +1,4 @@
-# [team name] Team Charter
+# Froscii Team Charter
 
 ## Instructions
 
@@ -33,12 +33,10 @@ These resources may be helpful as you fill out your team charter. They are optio
 
 ### Administrative Information:
 
-|Name            |Preferred Contact Method (Zoom, Slack, email, etc.) |
-|---	           |---                                           |
-|Team Member (a) |                                              |
-|Team Member (b) |                                              |
-|Team Member (c) |                                              |
-|Team Member (d) |                                              |
+| Name            | Preferred Contact Method (Zoom, Slack, email, etc.) |
+|-----------------|-----------------------------------------------------|
+| David Wells (a) | Slack                                               |
+| Team Member (b) |                                                     |
 
 ### Psychological safety
 
