@@ -1,18 +1,5 @@
 # Team Froscii Design Document
 
-## Instructions
-
-*Save a copy of this template for your team in the same folder that contains
-this template.*
-
-*Replace italicized text (including this text!) with details of the design you
-are proposing for your team project. (Your replacement text shouldn't be in
-italics)*
-
-*You should take a look at the example design document in the same folder as
-this template for more guidance on the types of information to capture, and the
-level of detail to aim for.*
-
 ## *Froscii* Design
 
 ## 1. Problem Statement
@@ -48,8 +35,7 @@ text art.
 U2. As a Froscii customer, I want to see my image in a collection after I've added it
 to that collection
 
-U3. I want to be unable to add an image to a collection if 1, the collection is password-
-protected, and 2, I did not enter the correct password.
+U3. I want to be able to scroll through drawings in a collection.
 
 U4. I want to see the latest-added image on the home page.
 
@@ -61,11 +47,6 @@ is already in use.
 U7. I want the most popular collections to be found at the top of the collections page.
 
 ## 4. Project Scope
-
-*Clarify which parts of the problem you intend to solve. It helps reviewers know
-what questions to ask to make sure you are solving for what you say and stops
-discussions from getting sidetracked by aspects you do not intend to handle in
-your design.*
 
 ### 4.1. In Scope
 
@@ -108,28 +89,40 @@ would love to do with more time.*
 * time last viewed stored to Drawing
 * saves stored to Drawing
 * Drawings can be removed
+* "Random Drawing" button.
 
 # 5. Proposed Architecture Overview
 
-*Describe broadly how you are proposing to solve for the requirements you
-described in Section 3.*
+The initial release version of the Froscii website will have 3 main pages, with drawing and collection
+creation and viewing. For now, all drawings will be made of straight lines.
 
-*This may include class diagram(s) showing what components you are planning to
-build.*
+We will use AWS Lambda to convert images on demand. We will pair it with API Gateway
+for the functions `CreateCollection`, `AddToCollection`, `ConvertText`, and
+`ViewImageFromCollection`. Given that the home page is no different from any other
+collection, the AddToCollection function will be called when any drawing is created, nullifying
+the need for a 5th function, `CreateImage`. ViewImageFromCollection may not be necessary, given that we
+could keep track of which image we are viewing through the html request and ConvertText alone. ConvertText
+only needs a drawingID anyhow. If it is needed, it will call the ConvertText funciton,
+and will also keep track of what page the user is on to determine which image to display.
+No object deletion will be implemented, as we want as much content produced on the get-go as we can get.
 
-*You should argue why this architecture (organization of components) is
-reasonable. That is, why it represents a good data flow and a good separation of
-concerns. Where applicable, argue why this architecture satisfies the stated
-requirements.*
+We believe these plans will satisfy the customer. This is a somewhat novel idea, afterall.
 
 # 6. API
 
 ## 6.1. Public Models
-
-*Define the data models your service will expose in its responses via your
-*`-Model`* package. These will be equivalent to the *`PlaylistModel`* and
-*`SongModel`* from the Unit 3 project.*
-
+```
+// DrawingModel
+String id;
+String name;
+String textArt;
+int width;
+```
+```
+// CollectionModel
+String name;
+List<String> drawings;
+```
 ## 6.2. *First Endpoint*
 
 *Describe the behavior of the first endpoint you will build into your service
