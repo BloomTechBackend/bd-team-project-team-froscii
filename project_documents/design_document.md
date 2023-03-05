@@ -32,9 +32,9 @@ lines and style.
 *List the most important questions you have about your design, or things that
 you are still debating internally that you might like help working through.*
 
-1.   
-2.   
-3.  
+1.   Updating an image from a Lambda to HTML automatically
+2.   Allowing the user to save that image
+3.   A Javascript slideshow function.
 
 ## 3. Use Cases
 
@@ -42,12 +42,23 @@ you are still debating internally that you might like help working through.*
 would like to do (and why). You may also include use cases for yourselves, or
 for the organization providing the product to customers.*
 
-U1. *As a [product] customer, I want to `<result>` when I `<action>`*
+U1. As a Froscii customer, I want to see my converted image update when I change my
+text art.
 
-U2. *As a [product] customer, I want to view my grocery list when I log into the
-grocery list page*
-    
-U3. ...
+U2. As a Froscii customer, I want to see my image in a collection after I've added it
+to that collection
+
+U3. I want to be unable to add an image to a collection if 1, the collection is password-
+protected, and 2, I did not enter the correct password.
+
+U4. I want to see the latest-added image on the home page.
+
+U5. I want to view an empty collection once it has been made.
+
+U6. I want to be told that the name of a collection I'm making is taken if I am using a name that
+is already in use.
+
+U7. I want the most popular collections to be found at the top of the collections page.
 
 ## 4. Project Scope
 
@@ -61,6 +72,17 @@ your design.*
 *Which parts of the problem defined in Sections 1 and 3 will you solve with this
 design?*
 
+* Continuous-lined, straight-edged characters to be converted
+* Collection create button
+* Collections page with alphabetized list
+* Home page (which is just another collection)
+* ASCII Art Converter page with "convert" and "post" buttons
+* Collection page has "next", "previous", and "save" buttons
+* ASCII Art, not image, is saved to database.
+* Drawing posts have the drawing name and date posted.
+* All Drawings are saved to the home collection.
+* Width and height of ASCII art determined by user.
+
 ### 4.2. Out of Scope
 
 *Based on your problem description in Sections 1 and 3, are there any aspects
@@ -68,6 +90,24 @@ you are not planning to solve? Do potential expansions or related problems occur
 to you that you want to explicitly say you are not worrying about now? Feel free
 to put anything here that you think your team can't accomplish in the unit, but
 would love to do with more time.*
+
+* Color for the Converted ASCII Art.
+* A search engine for collections.
+* Slopes in the CAA.
+* Complete keyboard character implementation
+* Information posted with drawings
+* User data
+* A downloadable conversion gif.
+* An open door animation for unlocked collections.
+* Passwords.
+* Real-time image conversion updating
+* A "font size" button on AAC page.
+* Download image button (they could just screenshot)
+* Lines are crisp (may happen automatically)
+* converter version stored to Drawing
+* time last viewed stored to Drawing
+* saves stored to Drawing
+* Drawings can be removed
 
 # 5. Proposed Architecture Overview
 
@@ -116,6 +156,18 @@ the first endpoint)*
 may be helpful to first think of what objects your service will need, then
 translate that to a table structure, like with the *`Playlist` POJO* versus the
 `playlists` table in the Unit 3 project.*
+
+Drawing:
+* id: String, unique (KEY)
+* name: String
+* post_date: integer
+* ascii_art: String, no newline escape codes
+* art_width: integer
+
+Collection:
+* name: String, unique (KEY)
+* Drawings: Stringlist, stores the IDs of Drawings
+* *size stored implicity in Drawings*
 
 # 8. Pages
 
