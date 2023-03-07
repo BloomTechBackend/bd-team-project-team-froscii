@@ -123,25 +123,39 @@ int width;
 String name;
 List<String> drawings;
 ```
-## 6.2. *First Endpoint*
+## 6.2. *GET Collection Endpoint*
 
-*Describe the behavior of the first endpoint you will build into your service
-API. This should include what data it requires, what data it returns, and how it
-will handle any known failure cases. You should also include a sequence diagram
-showing how a user interaction goes from user to website to service to database,
-and back. This first endpoint can serve as a template for subsequent endpoints.
-(If there is a significant difference on a subsequent endpoint, review that with
-your team before building it!)*
+* Accepts `GET` requests to `/collections/:name`
+* Accepts the name of a collection and returns the corresponding collection.
+    * If the given collection name is not found, it will throw a
+      `CollectionNotFoundException`
 
-*(You should have a separate section for each of the endpoints you are expecting
-to build...)*
+## 6.3. *GET Drawing Endpoint*
 
-## 6.3 *Second Endpoint*
+* Accepts `GET` requests to `/collections/:name/`
+* Accepts the ID of a drawing and returns the corresponding drawing.
+    * If the given drawing ID is not found, it will throw a
+      `DrawingNotFoundException`
+    * If the given drawing breaks while rendering, it will throw a
+      `CorruptDrawingException`
 
-*(repeat, but you can use shorthand here, indicating what is different, likely
-primarily the data in/out and error conditions. If the sequence diagram is
-nearly identical, you can say in a few words how it is the same/different from
-the first endpoint)*
+## 6.4. *POST Collection Endpoint*
+
+* Accepts `POST` requests to `/collections`
+* Accepts the name of a collection and creates the corresponding collection.
+    * If the given collection name is not allowed, will throw a
+      `IllegalCollectionNameException`
+
+## 6.5. *PUT Collection Endpoint*
+
+* Accepts `PUT` requests to `/collections/:name`
+* Accepts the name of a Drawing and its text form, and the name of the collection if
+  it's not being added to the home page, and updates the corresponding collection
+  with a new drawing.
+    * If the given collection name is not found, will throw a
+      `CollectionNotFoundException`
+    * If the given drawing id is not found, will throw a
+      `DrawingNotFoundException`
 
 # 7. Tables
 
@@ -164,10 +178,18 @@ Collection:
 
 # 8. Pages
 
-*Include mock-ups of the web pages you expect to build. These can be as
-sophisticated as mockups/wireframes using drawing software, or as simple as
-hand-drawn pictures that represent the key customer-facing components of the
-pages. It should be clear what the interactions will be on the page, especially
-where customers enter and submit data. You may want to accompany the mockups
-with some description of behaviors of the page (e.g. “When customer submits the
-submit-dog-photo button, the customer is sent to the doggie detail page”)*
+## 8.1 Home Page
+![The Home Page, which is just another collection, which displays
+just one image at a time.](images/home%20page%20html%20mock.png)
+
+## 8.2 Post Page
+![The Post Page, where you can edit drawings and name them before
+posting.](images/post%20page%20html%20mock.png)
+
+## 8.3 Collections Page
+![The Collections Page, where you can create a collection or view
+the names of other collections](images/collections%20page%20html%20mock.png)
+
+## 8.4 Specific Collection Page
+![The Page for a particular collection. Just like the Home Page,
+you may view one image at a time.](images/specific%20collection%20page%20html%20mock.png)
