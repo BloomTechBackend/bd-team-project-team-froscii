@@ -39,6 +39,12 @@ public class Drawing {
         this.id = this.hashCode();
         this.width = width;
     }
+    public int getId() {
+        return id;
+    }
+    public String getName() {
+        return name;
+    }
     public Drawing(String text, int width) {
         this.text = text;
         this.id = this.hashCode();
