@@ -174,7 +174,7 @@ Drawing:
 Collection:
 * name: String, unique (KEY)
 * Drawings: Stringlist, stores the IDs of Drawings
-* *size stored implicity in Drawings*
+* *size stored implicitly in Drawings*
 
 # 8. Pages
 
