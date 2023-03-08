@@ -8,9 +8,9 @@ import java.awt.Graphics2D;
 public class GraphicsApp extends JFrame {
 // Defining all the static variables
     private static final long serialVersionUID = 1L;
-    public static final int SIZE = 8;
-    public static final int CANVAS_WIDTH  = 720;
-    public static final int CANVAS_HEIGHT = 540;
+    public static final int CANVAS_WIDTH  = 1000;
+    public static final int CANVAS_HEIGHT = 500;
+    public static final int THICKNESS = 3;
     public static Drawing drawing;
     // The program enters from the main method
     public static void main(String[] args) {
@@ -27,7 +27,6 @@ public class GraphicsApp extends JFrame {
                     newLine = scanner.nextLine();
                 }
                 drawing = new Drawing(textEntry,width);
-                System.out.println(textEntry);
                 new GraphicsApp(); // this run method will create a new object and thus invoke the constructor method.
             }
         });
@@ -52,8 +51,7 @@ public class GraphicsApp extends JFrame {
         public void paintComponent(Graphics graphics) {
             super.paintComponent(graphics);
             Graphics2D graphics2d = (Graphics2D) graphics;
-            graphics2d.setStroke(new BasicStroke(SIZE, BasicStroke.CAP_SQUARE, BasicStroke.JOIN_ROUND));
-            //graphics.drawLine(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
+            graphics2d.setStroke(new BasicStroke(THICKNESS, BasicStroke.CAP_SQUARE, BasicStroke.JOIN_ROUND));
             List<PolylineData> polylines = drawing.convertText();
             for (PolylineData p: polylines) {
                 graphics.drawPolyline(p.getXPoints(), p.getYPoints(), p.getPointCount());

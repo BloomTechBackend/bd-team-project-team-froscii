@@ -1,11 +1,21 @@
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Nested;
 
-import java.security.Policy;
 import java.util.List;
 
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
-public class DrawingTest {
+public class DrawingTests {
+    @Nested
+    public class CharPointConnectionTests {
+        @Test
+        public void connectTopCorners() {
+            assertTrue(Drawing.pointsConnect(0, 4));
+        }
+    }
+
     @Test
     public void testOnePolyline() {
         String input = "|||";
@@ -32,13 +42,12 @@ public class DrawingTest {
         String input = "\\/  /\\";
         List<PolylineData> result = new Drawing(input,6).convertText();
         assertTrue("Two polylines should have been made", (result.size() == 2));
-
     }
     @Test
     public void testTwoHeightPolyline() {
         //Make sure that 1 polyline is made from \/  /\
         String input = "\\/ /\\ ";
-        List<PolylineData> result = new Drawing(input,3).convertText();
+        List<PolylineData> result = new Drawing(input, 3).convertText();
         assertTrue("One polyline should have been made", (result.size() == 1));
     }
 }
