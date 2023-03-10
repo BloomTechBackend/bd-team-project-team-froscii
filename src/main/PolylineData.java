@@ -1,3 +1,5 @@
+package main;
+
 public class PolylineData {
     private final int[] xPoints;
     private final int[] yPoints;

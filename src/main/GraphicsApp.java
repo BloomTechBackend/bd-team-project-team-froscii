@@ -1,6 +1,7 @@
+package main;
+
 import javax.swing.JFrame;
 import javax.swing.*;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 import java.awt.*;
@@ -31,13 +32,12 @@ public class GraphicsApp extends JFrame {
             }
         });
     }
-    //Here we are creating an instance of the drawing canvas inner class called DrawCanwas
-    private DrawCanvas sampleCanvas;
+    private DrawCanvas canvas;
     public GraphicsApp() {
-        sampleCanvas = new DrawCanvas();
-        sampleCanvas.setPreferredSize(new Dimension(CANVAS_WIDTH, CANVAS_HEIGHT));
+        canvas = new DrawCanvas();
+        canvas.setPreferredSize(new Dimension(CANVAS_WIDTH, CANVAS_HEIGHT));
         Container containerPane = getContentPane();
-        containerPane.add(sampleCanvas);
+        containerPane.add(canvas);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         pack();
         setVisible(true); // We want this OFF in Lambda implementation
@@ -49,12 +49,21 @@ public class GraphicsApp extends JFrame {
         private static final long serialVersionUID = 1L;
         @Override
         public void paintComponent(Graphics graphics) {
-            super.paintComponent(graphics);
-            Graphics2D graphics2d = (Graphics2D) graphics;
+            Graphics2D graphics2d = (Graphics2D) graphics; // Cast so we can set the line width \/
+            super.paintComponent(graphics2d);
             graphics2d.setStroke(new BasicStroke(THICKNESS, BasicStroke.CAP_SQUARE, BasicStroke.JOIN_ROUND));
             List<PolylineData> polylines = drawing.convertText();
+            int r = 255;
+            int g = 0;
+            int b = 0;
+            int hold = 0;
             for (PolylineData p: polylines) {
-                graphics.drawPolyline(p.getXPoints(), p.getYPoints(), p.getPointCount());
+                graphics2d.setColor(new Color(r,g,b));
+                graphics2d.drawPolyline(p.getXPoints(), p.getYPoints(), p.getPointCount());
+                hold = r;
+                r = g;
+                g = b;
+                b = hold;
             }
         }
     }
