@@ -5,6 +5,8 @@ import java.util.*;
 public class Drawing {
     private static final int CHAR_WIDTH = 5;
     private static final int CHAR_HEIGHT = 7;
+    private final int offsetX;
+    private final int offsetY;
     private static final Map<Character,List<Coordinate>> CHARS_TO_POINTS = createCharsToPoints();
 
     private String name;
@@ -19,6 +21,8 @@ public class Drawing {
         this.text = stringToGrid(text,width);
         this.id = this.hashCode();
         this.width = width;
+        this.offsetX = (GraphicsApp.CANVAS_WIDTH - (this.width*(CHAR_WIDTH-1)*(CHAR_WIDTH-1)))/2;
+        this.offsetY = (GraphicsApp.CANVAS_HEIGHT - (this.text[0].length*(CHAR_HEIGHT-1)*(CHAR_HEIGHT-1)))/2;
     }
     public int getId() {
         return id;
@@ -27,10 +31,7 @@ public class Drawing {
         return name;
     }
     public Drawing(String text, int width) {
-        this.text = stringToGrid(text,width);
-        this.id = this.hashCode();
-        this.name = "";
-        this.width = width;
+        this("",text,width);
     }
     /**
      * Returns a 3-layered list of lists.
@@ -194,16 +195,10 @@ public class Drawing {
             }
         }
     }
-    public int centeredX() {
-        return (GraphicsApp.CANVAS_WIDTH - (width*(CHAR_WIDTH-1)*(CHAR_WIDTH-1)))/2;
-    }
-    public int centeredY() {
-        return (GraphicsApp.CANVAS_HEIGHT - (text[0].length*(CHAR_HEIGHT-1)*(CHAR_HEIGHT-1)))/2;
-    }
     public int calcX(int localX, int globalX) {
-        return (localX + (globalX * (CHAR_WIDTH-1))) * (CHAR_WIDTH-1) + centeredX();
+        return (localX + (globalX * (CHAR_WIDTH-1))) * (CHAR_WIDTH-1) + offsetX;
     }
     public int calcY(int localY, int globalY) {
-        return (localY + (globalY * (CHAR_HEIGHT-1))) * (CHAR_HEIGHT-1)  + centeredY();
+        return (localY + (globalY * (CHAR_HEIGHT-1))) * (CHAR_HEIGHT-1)  + offsetY;
     }
 }
