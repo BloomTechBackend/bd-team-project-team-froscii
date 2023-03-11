@@ -137,7 +137,7 @@ public class Drawing {
                 '<',                    '>',                 'v',                   '^',
                 'L',                    '7',                 'V',                   '[',
                 ']',                    'N',                 'z',                   'Z',
-                'M',                    'W'};
+                'M',                    'W',                 'm'};
         // Draws from the top-leftmost endpoint first.
         // Each character can be drawn in a 5x7 grid
         int[][] CHAR_POINTS = new int[][]
@@ -146,7 +146,7 @@ public class Drawing {
                 new int[]{9,15,29},     new int[]{5,19,25},  new int[]{15,32,19},   new int[]{20,2,19},
                 new int[]{0,30,34},     new int[]{0,4,34},   new int[]{0,32,4},     new int[]{3,1,31,33},
                 new int[]{1,3,33,31},   new int[]{30,0,34,4},new int[]{16,18,31,33},new int[]{0,4,30,34},
-                new int[]{30,0,12,4,34},new int[]{0,30,17,34,4}};
+                new int[]{30,0,12,4,34},new int[]{0,30,17,34,4},new int[]{30,20,16,27,18,24,34}};
         // Map the characters to their line-point-coordinate values
         Map<Character, List<Coordinate>> charsToPoints = new HashMap<>();
         for (int i = 0; i < ALLOWED_CHARS.length; i++) {
@@ -194,10 +194,16 @@ public class Drawing {
             }
         }
     }
-    public static int calcX(int localX, int globalX) {
-        return (localX + (globalX * (CHAR_WIDTH-1))) * (CHAR_WIDTH-1);
+    public int centeredX() {
+        return (GraphicsApp.CANVAS_WIDTH - (width*(CHAR_WIDTH-1)*(CHAR_WIDTH-1)))/2;
     }
-    public static int calcY(int localY, int globalY) {
-        return (localY + (globalY * (CHAR_HEIGHT-1))) * (CHAR_HEIGHT-1);
+    public int centeredY() {
+        return (GraphicsApp.CANVAS_HEIGHT - (text[0].length*(CHAR_HEIGHT-1)*(CHAR_HEIGHT-1)))/2;
+    }
+    public int calcX(int localX, int globalX) {
+        return (localX + (globalX * (CHAR_WIDTH-1))) * (CHAR_WIDTH-1) + centeredX();
+    }
+    public int calcY(int localY, int globalY) {
+        return (localY + (globalY * (CHAR_HEIGHT-1))) * (CHAR_HEIGHT-1)  + centeredY();
     }
 }

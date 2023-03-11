@@ -53,17 +53,8 @@ public class GraphicsApp extends JFrame {
             super.paintComponent(graphics2d);
             graphics2d.setStroke(new BasicStroke(THICKNESS, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
             List<Line> lines = drawing.convertText();
-            int r = 255;
-            int g = 0;
-            int b = 0;
-            int hold = 0;
             for (Line p: lines) {
-                //graphics2d.setColor(new Color(r,g,b));
                 graphics2d.drawLine(p.aX(), p.aY(),p.bX(), p.bY());
-                hold = r;
-                r = g;
-                g = b;
-                b = hold;
             }
             System.out.println("** " + lines.size() + " **");
         }
