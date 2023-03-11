@@ -51,20 +51,21 @@ public class GraphicsApp extends JFrame {
         public void paintComponent(Graphics graphics) {
             Graphics2D graphics2d = (Graphics2D) graphics; // Cast so we can set the line width \/
             super.paintComponent(graphics2d);
-            graphics2d.setStroke(new BasicStroke(THICKNESS, BasicStroke.CAP_SQUARE, BasicStroke.JOIN_ROUND));
-            List<PolylineData> polylines = drawing.convertText();
+            graphics2d.setStroke(new BasicStroke(THICKNESS, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
+            List<Line> lines = drawing.convertText();
             int r = 255;
             int g = 0;
             int b = 0;
             int hold = 0;
-            for (PolylineData p: polylines) {
-                graphics2d.setColor(new Color(r,g,b));
-                graphics2d.drawPolyline(p.getXPoints(), p.getYPoints(), p.getPointCount());
+            for (Line p: lines) {
+                //graphics2d.setColor(new Color(r,g,b));
+                graphics2d.drawLine(p.aX(), p.aY(),p.bX(), p.bY());
                 hold = r;
                 r = g;
                 g = b;
                 b = hold;
             }
+            System.out.println("** " + lines.size() + " **");
         }
     }
 }
