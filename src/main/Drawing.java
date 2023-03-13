@@ -7,6 +7,7 @@ public class Drawing {
     private static final int CHAR_HEIGHT = 7;
     private final int offsetX;
     private final int offsetY;
+    private static char[] ALLOWED_CHARS;
     private static final Map<Character,List<Coordinate>> CHARS_TO_POINTS = createCharsToPoints();
 
     private String name;
@@ -41,76 +42,97 @@ public class Drawing {
      */
     public List<Line> convertText() {
         List<Line> lines =  new ArrayList<>();
-        Map<Integer, List<Line>> rows = new HashMap<>();
+        Map<Integer, Set<Line>> rows = new HashMap<>(); //Stored by left-most point
         Coordinate coord = null;
         Coordinate nextCoord = null;
         int x1; int y1; int x2; int y2;
         for (int y = 0; y < text[0].length; y++){
             for (int x = 0; x < text.length; x++) {
-                if (text[x][y] != ' ') {
-                    // Get the points from the character and where they should go
-                    List<Coordinate> charPoints = CHARS_TO_POINTS.get(text[x][y]);
-                    if (charPoints.size() == 1) {
-                        // Create two of the same point
-                        coord = new Coordinate(calcX(charPoints.get(0).getX(),x),
-                                calcY(charPoints.get(0).getY(),y));
-                        lines.add(new Line (coord, coord));
-                    } else {
-                        // Add two conjoined points to the list
-                        for (int i = 0; i < charPoints.size()-1; i++) {
-                            x1 = calcX(charPoints.get(i).getX(),x);
-                            y1 = calcY(charPoints.get(i).getY(),y);
-                            x2 = calcX(charPoints.get(i+1).getX(),x);
-                            y2 = calcY(charPoints.get(i+1).getY(),y);
-                            coord = new Coordinate(x1,y1);
-                            nextCoord = new Coordinate(x2,y2);
-                            Line line;
-                            // Point a will always be to the left of point b.
-                            if (x1 > x2) {
-                                line = new Line(nextCoord,coord);
-                            } else {
-                                line = new Line(coord, nextCoord);
+                // I think checking if it's a space here is not a time saver anymore.
+                // Get the points from the character and where they should go
+                List<Coordinate> charPoints = CHARS_TO_POINTS.get(text[x][y]);
+                if (charPoints.size() == 1) {
+                    // Create two of the same point
+                    coord = new Coordinate(calcX(charPoints.get(0).getX(),x),
+                            calcY(charPoints.get(0).getY(),y));
+                    lines.add(new Line (coord, coord));
+                } else {
+                    // Add two conjoined points to the list
+                    for (int i = 0; i < charPoints.size()-1; i++) {
+                        x1 = calcX(charPoints.get(i).getX(),x);
+                        y1 = calcY(charPoints.get(i).getY(),y);
+                        x2 = calcX(charPoints.get(i+1).getX(),x);
+                        y2 = calcY(charPoints.get(i+1).getY(),y);
+                        coord = new Coordinate(x1,y1);
+                        nextCoord = new Coordinate(x2,y2);
+                        Line line;
+                        // Point a will always be to the left of point b.
+                        if (x1 > x2) {
+                            line = new Line(nextCoord,coord);
+                        } else {
+                            line = new Line(coord, nextCoord);
+                        }
+                        if (y1 == y2) { // horizontal line
+                            if (!rows.containsKey(y1)) {
+                                rows.put(y1, new TreeSet<>());
                             }
-                            if (y1 == y2) { // horizontal line
-                                if (!rows.containsKey(y1)) {
-                                    rows.put(y1, new ArrayList<>());
-                                }
-                                rows.get(y1).add(line);
-                            } else {
-                                lines.add(line);
-                            }
+                            rows.get(y1).add(line);
+                        } else {
+                            lines.add(line);
                         }
                     }
                 }
             }
         }
         // Combine lines in the row hashmap, then add them to the main lines list
-        int bridge = 20;
+        int bridge = 10;
         // This is only horizontal lines right now.
         for (Integer y: rows.keySet()) {
-            Line joinedLine = null;
+            Line previousLine = null;
             for (Line line: rows.get(y)) {
-                if (joinedLine == null) {
-                    joinedLine = line;
+                if (previousLine == null) {
+                    previousLine = line;
                 }
-                if (Math.abs(joinedLine.bX() - line.aX()) < bridge) {
-                    joinedLine.setB(line.getB());
+                // If these two lines overlap or nearly overlap, condense them.
+                if (Math.abs(previousLine.bX() - line.aX()) < bridge) {
+                    // If one is actually within the other, just forget it.
+                    if (line.bX() > previousLine.bX()) {
+                        previousLine.setB(line.getB());
+                    }
                 } else {
-                    lines.add(joinedLine);
-                    joinedLine = line;
+                    lines.add(previousLine);
+                    previousLine = line;
                 }
             }
-            if (joinedLine != null) {
-                lines.add(joinedLine);
+            if (previousLine != null) {
+                lines.add(previousLine);
             }
         }
         return lines;
     }
+
+    /**
+     * Convert a text string into a 2-Dimensional grid of characters.
+     * All characters not found in the ALLOWED_CHARS will be changed
+     * to $, or "unknown".
+     * @param s
+     * @param width
+     * @return char[][]
+     */
     public static char[][] stringToGrid(String s, int width) {
         char[][] grid = new char[width][s.length()/width];
         int x = 0;
         int y = 0;
         for (char c: s.toCharArray()) {
+            boolean found = false;
+            for (char chr: ALLOWED_CHARS) {
+                if (chr == c) {
+                    found = true;
+                }
+            }
+            if (!found) {
+                c = '$';
+            }
             grid[x][y] = c;
             x++;
             if (x == width) {
@@ -132,44 +154,58 @@ public class Drawing {
     private static Map<Character, List<Coordinate>> createCharsToPoints() {
         // Set up the characters and their line endpoint values
         // /\|-_.,'`"<>v^L7V[]NzZMW
-        char[] ALLOWED_CHARS = new char[]
+        ALLOWED_CHARS = new char[]
                {'/',                    '\\',                '|',                   '-',             '_',
                 '.',                    ',',                 '\'',                  '`',             '"', //acts as over-line
                 '<',                    '>',                 'v',                   '^',
                 'L',                    '7',                 'V',                   '[',
                 ']',                    'N',                 'z',                   'Z',
-                'M',                    'W',                 'm'};
+                'M',                    'W',                 'm',
+                '#',                    'o',                                        '*',
+                '+',                    '{',                                '}',
+                '(',                    ')',                 ' ',           'I',
+                'O',                                         'H',
+                '$',                                         '!',                   'i', //these two purposely do not have dots
+                'X',                    'Y',                 'A'};
         // Draws from the top-leftmost endpoint first.
         // Each character can be drawn in a 5x7 grid
         int[][] CHAR_POINTS = new int[][]
-               {new int[]{4,30},        new int[]{0,34},     new int[]{2,32},       new int[]{15,19},new int[]{30,34},
-                new int[]{32},          new int[]{28,32},    new int[]{2,7},        new int[]{2},    new int[]{0,4},
-                new int[]{9,15,29},     new int[]{5,19,25},  new int[]{15,32,19},   new int[]{20,2,19},
+               {new int[]{4,4,17,17,30,30},new int[]{0,0,17,17,34,34},new int[]{2,2,17,17,32,32},new int[]{15,19},new int[]{30,34},
+                new int[]{27,21,23,27}, new int[]{28,32},    new int[]{2,7},        new int[]{2,8,6,2},new int[]{0,4},
+                new int[]{4,15,34},     new int[]{0,19,30},  new int[]{15,32,19},   new int[]{15,2,19},
                 new int[]{0,30,34},     new int[]{0,4,34},   new int[]{0,32,4},     new int[]{3,1,31,33},
                 new int[]{1,3,33,31},   new int[]{30,0,34,4},new int[]{16,18,31,33},new int[]{0,4,30,34},
-                new int[]{30,0,12,4,34},new int[]{0,30,17,34,4},new int[]{30,20,16,27,18,24,34}};
+                new int[]{30,0,12,4,34},new int[]{0,30,17,34,4},new int[]{30,20,16,27,18,24,34},
+                new int[]{5,9,29,25,5}, new int[]{11,13,19,24,28,26,20,15,11},      new int[]{2,8,12,6,2},
+                new int[]{7,27,17,15,19},new int[]{3,2,6,11,15,21,26,32,33},new int[]{1,2,8,13,19,23,28,32,31},
+                new int[]{3,3,6,15,26,33,33},new int[]{1,1,8,19,28,31,31},new int[]{},new int[]{0,4,2,32,30,34},
+                new int[]{1,3,14,24,33,31,20,10,1},          new int[]{0,30,15,19,4,34},
+                new int[]{10,25,11,26,12,27,13,28,14,29},    new int[]{2,2,17,17},new int[]{17,17,32,32},
+                new int[]{0,34,17,30,4},new int[]{0,0,17,4,4},new int[]{30,30,17,34,34}};
+
+        //  0  1  2  3  4     ..........
+        //  5  6  7  8  9     ..##..##..      o----o
+        //  10 11 12 13 14    ##......##    o'      'o
+        //  15 16 17 18 19 >> .......... >> |        |
+        //  20 21 22 23 24    ##......##    o        o
+        //  25 26 27 28 29    ..##..##..     'o----o'
+        //  30 31 32 33 34    ..........
         // Map the characters to their line-point-coordinate values
+
         Map<Character, List<Coordinate>> charsToPoints = new HashMap<>();
+        // FIXME: Does not allow multi-stroke characters such as ';'
         for (int i = 0; i < ALLOWED_CHARS.length; i++) {
             List<Coordinate> charPoints = new ArrayList<>();
-            for (Integer v: CHAR_POINTS[i]) {
+            for (Integer v : CHAR_POINTS[i]) {
                 // Convert the line-point values to coordinate values
-                int x = v%CHAR_WIDTH;
-                int y = (v - x)/CHAR_WIDTH;
+                int x = v % CHAR_WIDTH;
+                int y = (v - x) / CHAR_WIDTH;
                 charPoints.add(new Coordinate(x, y));
             }
             charsToPoints.put(ALLOWED_CHARS[i], charPoints);
         }
         return charsToPoints;
     }
-    //                   _1_2_3_4_5_
-    // 0  1  2  3  4 // 1|..######..//  o----o  //
-    // 5  6  7  8  9 // 2|......##..//       |  //
-    // 10 11 12 13 14// 3|......##..//       |  //
-    // 15 16 17 18 19// 4|......##..>>       |  //
-    // 20 21 22 23 24// 5|......##..//       |  //
-    // 25 26 27 28 29// 6|......##..//       |  //
-    // 30 31 32 33 34// 7|..######..//  o----o  //
     /**
      * Checks if two points connect
      * @param a : first point value

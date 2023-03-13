@@ -1,6 +1,6 @@
 package main;
 
-public class Line {
+public class Line implements Comparable<Line>{
     private Coordinate pointA;
     private Coordinate pointB;
     public Line(Coordinate a, Coordinate b) {
@@ -30,5 +30,21 @@ public class Line {
     }
     public void setB(Coordinate b) {
         pointB = b;
+    }
+    @Override
+    public int compareTo(Line otherline) {
+        if (this.aX() > otherline.aX()) {
+            return 2;
+        }
+        if (this.aX() == otherline.aX()) {
+            if (this.bX() > otherline.bX()) {
+                return 1;
+            }
+            if (this.bX() < otherline.bX()) {
+                return -1;
+            }
+            return 0;
+        }
+        return -2;
     }
 }
