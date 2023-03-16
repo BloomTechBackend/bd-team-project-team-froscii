@@ -51,6 +51,7 @@ public class GraphicsApp extends JFrame {
                 String name = new Scanner(System.in).next();
                 name = name.replace(' ','_');
                 drawing = new Drawing(name, textEntry,width);
+                System.out.println(drawing.hashCode());
                 new GraphicsApp(); // this run method will create a new object and thus invoke the constructor method.
             }
         });
@@ -84,7 +85,7 @@ public class GraphicsApp extends JFrame {
             //graphics2d.dispose();
             RenderedImage renderedImage = bufferedImage;
             try {
-                File file = new File("src/main/prints/" + drawing.getName() + ".png");
+                File file = new File("src/com/amazon/ata/froscii/drawing/service/prints/" + drawing.getName() + ".png");
                 ImageIO.write(renderedImage, "png", file);
             } catch (IOException e) {
                 System.out.println("Sorry bud. It don't like you.");

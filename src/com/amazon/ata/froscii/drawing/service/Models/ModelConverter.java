@@ -16,7 +16,7 @@ public class ModelConverter {
                 .withId(drawing.getId())
                 .withName(drawing.getName())
                 .withWidth(drawing.getWidth())
-                .withText(drawing.getText())
+                .withText(drawing.getTextArray())
                 .build();
     }
 

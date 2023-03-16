@@ -1,12 +1,15 @@
 package com.amazon.ata.froscii.drawing.service.dynamodb;
 
 import com.amazon.ata.froscii.drawing.service.GraphicsApp;
+//import com.amazon.ata.froscii.drawing.service.Models.CharacterGridArrayConverter;
 import com.amazon.ata.froscii.drawing.service.Parts.Coordinate;
 import com.amazon.ata.froscii.drawing.service.Parts.Line;
-import com.amazonaws.services.dynamodbv2.datamodeling.*;
+//import com.amazonaws.services.*;
+
+//import com.amazonaws.services.dynamodbv2.datamodeling.*;
 import java.util.*;
 
-@DynamoDBTable(tableName= "drawing")
+//@DynamoDBTable(tableName= "drawings")
 public class Drawing {
     private static final int CHAR_WIDTH = 5;
     private static final int CHAR_HEIGHT = 7;
@@ -34,6 +37,7 @@ public class Drawing {
         this.offsetX = (GraphicsApp.CANVAS_WIDTH - (this.width*(CHAR_WIDTH-1)*(CHAR_WIDTH-1)))/2;
         this.offsetY = (GraphicsApp.CANVAS_HEIGHT - (this.text[0].length*(CHAR_HEIGHT-1)*(CHAR_HEIGHT-1)))/2;
     }
+    //@DynamoDBAttribute(attributeName = "width")
     public int getWidth() {
         return this.width;
     }
@@ -43,12 +47,28 @@ public class Drawing {
     public void setText(char[][] text) {
         this.text = text;
     }
-    public char[][] getText() {
+
+    /**
+     * DDB only takes Strings and Numbers,
+     * so we must store this as a String
+     * @return
+     */
+    //@DynamoDBAttribute(attributeName = "text")
+    public String getText() {
+        String stringText = "";
+        for (char[] row : text) {
+            stringText += new String(row);
+        }
+        return stringText;
+    }
+    public char[][] getTextArray() {
         return text;
     }
-    public int getId() {
+    //@DynamoDBHashKey(attributeName = "id")
+    public Integer getId() {
         return this.hashCode();
     }
+    //@DynamoDBAttribute(attributeName = "name")
     public String getName() {
         return name;
     }

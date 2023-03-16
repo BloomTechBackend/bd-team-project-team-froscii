@@ -3,6 +3,7 @@ package com.amazon.ata.froscii.drawing.service.dynamodb;
 import java.util.ArrayList;
 import java.util.List;
 
+//@DynamoDBTable(tableName = "collections")
 public class DrawingCollection {
     private String name;
     private List<Integer> drawingIds;
@@ -19,9 +20,11 @@ public class DrawingCollection {
     public void setName(String name) {
         this.name = name;
     }
+    //@DynamoDBHashKey(attributeName = "name")
     public String getName() {
         return name;
     }
+    //@DynamoDBAttribute(attributeName = "drawingIds")
     public List<Integer> getDrawingIds() {
         return drawingIds;
     }
