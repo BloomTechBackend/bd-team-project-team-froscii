@@ -15,17 +15,26 @@ In/Out of scope implementations decided, Team and project name decided,
 
 **Goals:** Create converter tool using test-driven development
 
-**Activity:**
+**Activity:** Began by trying to add lines in characters together
+as large polylines, like a maze-solver, but switched to bulk-adding all lines,
+connecting only horizontal lines together, and drawing many individual lines.
 
-**Important Docs, Commits, or Code Reviews**:
+Did lots of testing of the software to refine it.
 
-**Things learned:**
+Was not made with test-driven development, as the results were mostly visual.
+
+**Important Docs, Commits, or Code Reviews**: nopolylines
+
+**Things learned:** There are many ways to solve problems, and
+you should not think the one you pick first is sacred.
+The library used to draw and save the images does
+not show the finished image at the same time if it saves the image.
 
 ## Week 3
 
 **Goals:** Create Lambda functions, API Gateway, Webpage
 
-**Activity:**
+**Activity:** Created DDB tables
 
 **Important Docs, Commits, or Code Reviews**:
 
