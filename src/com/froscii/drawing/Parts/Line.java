@@ -1,4 +1,4 @@
-package com.amazon.ata.froscii.drawing.service.Parts;
+package com.froscii.drawing.Parts;
 
 public class Line implements Comparable<Line>{
     private Coordinate pointA;

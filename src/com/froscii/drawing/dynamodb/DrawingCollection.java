@@ -1,4 +1,4 @@
-package com.amazon.ata.froscii.drawing.service.dynamodb;
+package com.froscii.drawing.dynamodb;
 
 import java.util.ArrayList;
 import java.util.List;

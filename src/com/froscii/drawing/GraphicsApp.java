@@ -1,11 +1,12 @@
-package com.amazon.ata.froscii.drawing.service;
+package com.froscii.drawing;
 
-import com.amazon.ata.froscii.drawing.service.Parts.Line;
-import com.amazon.ata.froscii.drawing.service.dynamodb.Drawing;
+import com.froscii.drawing.Parts.Line;
+import com.froscii.drawing.dynamodb.Drawing;
 
 import javax.swing.JFrame;
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.WindowEvent;
 import java.io.IOException;
 import java.util.List;
 import java.util.Scanner;
@@ -51,7 +52,6 @@ public class GraphicsApp extends JFrame {
                 String name = new Scanner(System.in).next();
                 name = name.replace(' ','_');
                 drawing = new Drawing(name, textEntry,width);
-                System.out.println(drawing.hashCode());
                 new GraphicsApp(); // this run method will create a new object and thus invoke the constructor method.
             }
         });
@@ -64,6 +64,7 @@ public class GraphicsApp extends JFrame {
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         pack();
         setVisible(true); // We want this OFF in Lambda implementation
+
     }
     /**
      * here drawCanvas is the inner class of the Jpanel which is used for custom drawing
@@ -74,7 +75,6 @@ public class GraphicsApp extends JFrame {
         public void paintComponent(Graphics graphics) {
             BufferedImage bufferedImage = new BufferedImage(CANVAS_WIDTH, CANVAS_HEIGHT, BufferedImage.TYPE_INT_RGB);
             Graphics2D graphics2d = bufferedImage.createGraphics();
-            //Graphics2D graphics2d = (Graphics2D) graphics; // Cast so we can set the line width \/
             super.paintComponent(graphics2d);
             graphics2d.setStroke(new BasicStroke(THICKNESS, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
             graphics2d.setColor(Color.BLACK);
@@ -82,14 +82,14 @@ public class GraphicsApp extends JFrame {
             for (Line p : lines) {
                 graphics2d.drawLine(p.aX(), p.aY(), p.bX(), p.bY());
             }
-            //graphics2d.dispose();
             RenderedImage renderedImage = bufferedImage;
             try {
-                File file = new File("src/com/amazon/ata/froscii/drawing/service/prints/" + drawing.getName() + ".png");
+                File file = new File("src/com/froscii/drawing/prints/" + drawing.getName() + ".png");
                 ImageIO.write(renderedImage, "png", file);
             } catch (IOException e) {
                 System.out.println("Sorry bud. It don't like you.");
             }
+            GraphicsApp.this.dispatchEvent(new WindowEvent(GraphicsApp.this, WindowEvent.WINDOW_CLOSING));
         }
     }
 }

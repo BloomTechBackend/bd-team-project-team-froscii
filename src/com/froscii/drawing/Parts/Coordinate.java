@@ -1,4 +1,4 @@
-package com.amazon.ata.froscii.drawing.service.Parts;
+package com.froscii.drawing.Parts;
 
 /**
  * Coordinate object that can also act as a node

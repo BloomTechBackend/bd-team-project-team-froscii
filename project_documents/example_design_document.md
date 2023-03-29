@@ -147,7 +147,7 @@ String title;
 ![Client sends submit playlist update form to Website Playlist page. Website
 playlist page sends an update request to UpdatePlaylistActivity.
 UpdatePlaylistActivity saves updates to the playlists
-database.](images/example_design_document/UpdatePlaylistSD.png)
+database.](../frontend/HTML%20mocks/example_design_document/UpdatePlaylistSD.png)
 
 ### 6.5. Add Song To Playlist Endpoint
 
@@ -165,7 +165,7 @@ database.](images/example_design_document/UpdatePlaylistSD.png)
 ![Client submits the add song form to the Website Add Song page. The website
 add song page sends an add song request to the AddSongToPlaylistActivity. The
 AddSongToPlaylistActivity save the updated playlist song list in the playlists
-database.](images/example_design_document/AddSongSD.png)
+database.](../frontend/HTML%20mocks/example_design_document/AddSongSD.png)
 
 ### 6.6. Get Playlist Songs Endpoint
 
@@ -188,7 +188,7 @@ GetPlaylistSongsActivity calls the playlists database to load the playlist. The
 playlists database returns the playlist item to the GetPlaylistSongsActivity.
 The GetPlaylistSongsActivity returns a List<SongModel> to the Website Playlist
 page. The Website playlist page presents a list of songs to the
-client.](images/example_design_document/GetPlaylistSD.png)
+client.](../frontend/HTML%20mocks/example_design_document/GetPlaylistSD.png)
 
 ## 7. Tables
 
@@ -219,23 +219,23 @@ Clicking the plus icon on the homepage opens the create playlist page. Clicking
 the Create button on the create playlist page opens the view playlist page.
 Clicking the plus icon on the view playlist page opens the add song page.
 Clicking add on the Add Song page opens the view playlist
-page.](images/example_design_document/OverallWorkflow.png)
+page.](../frontend/HTML%20mocks/example_design_document/OverallWorkflow.png)
 
 ![The homepage has a header that reads "Amazon Playlists." It also displays the
 user's alias. Each page has this header. Each playlist the user has is shown as
 a box with the playlist name and any tags it has. There is also a plus
-icon.](images/example_design_document/Homepage.png)
+icon.](../frontend/HTML%20mocks/example_design_document/Homepage.png)
 
 ![The create playlist page says "Create Playlist" with a field for name and
 tags. There is a "Create"
-button.](images/example_design_document/CreatePlaylist.png)
+button.](../frontend/HTML%20mocks/example_design_document/CreatePlaylist.png)
 
 ![The view playlist page has the name of the playlist and any tags associated
 with it. Each song in the playlist is listed in order. There is a plus button
 to add a new song to the
-playlist.](images/example_design_document/ViewPlaylist.png)
+playlist.](../frontend/HTML%20mocks/example_design_document/ViewPlaylist.png)
 
 ![The add song page has a form titled "Add Song." It displays the playlist name
 followed by fields for the asin and track number. THere is a check box for
 queue next. Finally, there is an "Add" button to submit the
-form.](images/example_design_document/AddSong.png)
+form.](../frontend/HTML%20mocks/example_design_document/AddSong.png)

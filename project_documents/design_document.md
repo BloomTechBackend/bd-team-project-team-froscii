@@ -180,16 +180,16 @@ Collection:
 
 ## 8.1 Home Page
 ![The Home Page, which is just another collection, which displays
-just one image at a time.](images/home%20page%20html%20mock.png)
+just one image at a time.](../frontend/HTML%20mocks/home%20page%20html%20mock.png)
 
 ## 8.2 Post Page
 ![The Post Page, where you can edit drawings and name them before
-posting.](images/post%20page%20html%20mock.png)
+posting.](../frontend/HTML%20mocks/post%20page%20html%20mock.png)
 
 ## 8.3 Collections Page
 ![The Collections Page, where you can create a collection or view
-the names of other collections](images/collections%20page%20html%20mock.png)
+the names of other collections](../frontend/HTML%20mocks/collections%20page%20html%20mock.png)
 
 ## 8.4 Specific Collection Page
 ![The Page for a particular collection. Just like the Home Page,
-you may view one image at a time.](images/specific%20collection%20page%20html%20mock.png)
+you may view one image at a time.](../frontend/HTML%20mocks/specific%20collection%20page%20html%20mock.png)

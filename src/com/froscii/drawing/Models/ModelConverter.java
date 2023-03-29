@@ -1,7 +1,7 @@
-package com.amazon.ata.froscii.drawing.service.Models;
+package com.froscii.drawing.Models;
 
-import com.amazon.ata.froscii.drawing.service.dynamodb.Drawing;
-import com.amazon.ata.froscii.drawing.service.dynamodb.DrawingCollection;
+import com.froscii.drawing.dynamodb.Drawing;
+import com.froscii.drawing.dynamodb.DrawingCollection;
 
 public class ModelConverter {
     public Drawing toDrawing(DrawingModel model) {

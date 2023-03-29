@@ -1,4 +1,4 @@
-package com.amazon.ata.froscii.drawing.service.Models;
+package com.froscii.drawing.Models;
 
 import java.util.List;
 import java.util.Objects;

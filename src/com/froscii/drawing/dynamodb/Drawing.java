@@ -1,9 +1,9 @@
-package com.amazon.ata.froscii.drawing.service.dynamodb;
+package com.froscii.drawing.dynamodb;
 
-import com.amazon.ata.froscii.drawing.service.GraphicsApp;
+import com.froscii.drawing.GraphicsApp;
 //import com.amazon.ata.froscii.drawing.service.Models.CharacterGridArrayConverter;
-import com.amazon.ata.froscii.drawing.service.Parts.Coordinate;
-import com.amazon.ata.froscii.drawing.service.Parts.Line;
+import com.froscii.drawing.Parts.Coordinate;
+import com.froscii.drawing.Parts.Line;
 //import com.amazonaws.services.*;
 
 //import com.amazonaws.services.dynamodbv2.datamodeling.*;
@@ -34,8 +34,6 @@ public class Drawing {
     }
     public void setWidth(int width) {
         this.width = width;
-        this.offsetX = (GraphicsApp.CANVAS_WIDTH - (this.width*(CHAR_WIDTH-1)*(CHAR_WIDTH-1)))/2;
-        this.offsetY = (GraphicsApp.CANVAS_HEIGHT - (this.text[0].length*(CHAR_HEIGHT-1)*(CHAR_HEIGHT-1)))/2;
     }
     //@DynamoDBAttribute(attributeName = "width")
     public int getWidth() {
