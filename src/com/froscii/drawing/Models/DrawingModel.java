@@ -59,8 +59,8 @@ public class DrawingModel {
     public String toString() {
         return "DrawingModel{" +
                 "name='" + name + '\'' +
-                "id='" + Integer.toString(id) + '\'' +
-                "width='" + Integer.toString(width) + '\'' +
+                "id='" + id + '\'' +
+                "width='" + width + '\'' +
                 "text='" + Arrays.deepToString(text) + "'}";
     }
 
@@ -77,7 +77,7 @@ public class DrawingModel {
             return this;
         }
         public Builder withId(int drawingIds) {
-            this.id = id;
+            this.id = drawingIds;
             return this;
         }
         public Builder withWidth(int width) {

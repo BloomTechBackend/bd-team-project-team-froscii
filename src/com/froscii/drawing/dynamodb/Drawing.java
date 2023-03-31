@@ -1,5 +1,8 @@
 package com.froscii.drawing.dynamodb;
 
+import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBAttribute;
+import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBHashKey;
+import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBTable;
 import com.froscii.drawing.GraphicsApp;
 //import com.amazon.ata.froscii.drawing.service.Models.CharacterGridArrayConverter;
 import com.froscii.drawing.Parts.Coordinate;
@@ -9,7 +12,7 @@ import com.froscii.drawing.Parts.Line;
 //import com.amazonaws.services.dynamodbv2.datamodeling.*;
 import java.util.*;
 
-//@DynamoDBTable(tableName= "drawings")
+@DynamoDBTable(tableName= "drawings")
 public class Drawing {
     private static final int CHAR_WIDTH = 5;
     private static final int CHAR_HEIGHT = 7;
@@ -35,7 +38,7 @@ public class Drawing {
     public void setWidth(int width) {
         this.width = width;
     }
-    //@DynamoDBAttribute(attributeName = "width")
+    @DynamoDBAttribute(attributeName = "width")
     public int getWidth() {
         return this.width;
     }
@@ -51,7 +54,7 @@ public class Drawing {
      * so we must store this as a String
      * @return
      */
-    //@DynamoDBAttribute(attributeName = "text")
+    @DynamoDBAttribute(attributeName = "text")
     public String getText() {
         String stringText = "";
         for (char[] row : text) {
@@ -62,11 +65,11 @@ public class Drawing {
     public char[][] getTextArray() {
         return text;
     }
-    //@DynamoDBHashKey(attributeName = "id")
+    @DynamoDBHashKey(attributeName = "id")
     public Integer getId() {
         return this.hashCode();
     }
-    //@DynamoDBAttribute(attributeName = "name")
+    @DynamoDBAttribute(attributeName = "name")
     public String getName() {
         return name;
     }
@@ -90,7 +93,7 @@ public class Drawing {
         int x1; int y1; int x2; int y2;
         for (int y = 0; y < text[0].length; y++){
             for (int x = 0; x < text.length; x++) {
-                // I think checking if it's a space here is not a time saver anymore.
+                // I don't think checking for a space here is a time saver anymore.
                 // Get the points from the character and where they should go
                 List<Coordinate> charPoints = CHARS_TO_POINTS.get(text[x][y]);
                 if (charPoints.size() == 1) {
@@ -186,7 +189,7 @@ public class Drawing {
     }
     @Override
     public int hashCode() {
-        return Objects.hash(name,text[0][0]);
+        return Objects.hash(name,width,text[0].length);
     }
 
     /**
