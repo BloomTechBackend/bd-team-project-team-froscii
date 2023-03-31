@@ -14,18 +14,19 @@ import java.util.*;
 
 @DynamoDBTable(tableName= "drawings")
 public class Drawing {
+    private String name;
+    private char[][] text;
+    private int width;
+
+    //All other variables are based on text.
     private static final int CHAR_WIDTH = 5;
     private static final int CHAR_HEIGHT = 7;
     private int offsetX;
     private int offsetY;
     private static char[] ALLOWED_CHARS;
     private static final Map<Character,List<Coordinate>> CHARS_TO_POINTS = createCharsToPoints();
-
-    private String name;
-    private char[][] text;
     // Width is stored here so that we don't have
     //  to remove newline escape codes from the text.
-    private int width;
 
     public Drawing(){}
     public Drawing(String name, String text, int width) {
@@ -253,6 +254,12 @@ public class Drawing {
         }
         return charsToPoints;
     }
+    public int calcX(int localX, int globalX) {
+        return (localX + (globalX * (CHAR_WIDTH-1))) * (CHAR_WIDTH-1) + offsetX;
+    }
+    public int calcY(int localY, int globalY) {
+        return (localY + (globalY * (CHAR_HEIGHT-1))) * (CHAR_HEIGHT-1)  + offsetY;
+    }
     /**
      * Checks if two points connect
      * @param a : first point value
@@ -278,10 +285,31 @@ public class Drawing {
             }
         }
     }
-    public int calcX(int localX, int globalX) {
-        return (localX + (globalX * (CHAR_WIDTH-1))) * (CHAR_WIDTH-1) + offsetX;
-    }
-    public int calcY(int localY, int globalY) {
-        return (localY + (globalY * (CHAR_HEIGHT-1))) * (CHAR_HEIGHT-1)  + offsetY;
+    public static char[][] stringToCharGrid(String string) {
+        //Divvy into lines
+        List<String> lines = new ArrayList<>();
+        int maxWidth = 0;
+        while (string.contains("\n")) {
+            String newString = string.substring(0, string.indexOf('\n'));
+            lines.add(newString);
+            //Keep track of the longest line length
+            maxWidth = Math.max(maxWidth, newString.length());
+            string = string.substring(string.indexOf('\n') + 1);
+        }
+        lines.add(string);
+        //Convert each line to an array of chars
+        char[][] charGrid = new char[lines.size()][maxWidth];
+        for (int i = 0; i < lines.size(); i ++) {
+            int c = 0;
+            while (c < lines.get(i).length()) {
+                charGrid[i][c] = lines.get(i).charAt(c);
+                c++;
+            }
+            while (c < maxWidth) {
+                charGrid[i][c] = ' ';
+                c++;
+            }
+        }
+        return charGrid;
     }
 }

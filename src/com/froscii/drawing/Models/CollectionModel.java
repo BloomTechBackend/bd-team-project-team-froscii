@@ -3,14 +3,14 @@ package com.froscii.drawing.Models;
 import java.util.List;
 import java.util.Objects;
 
-public class DrawingCollectionModel {
+public class CollectionModel {
     private String name;
     private List<Integer> drawingIds;
 
-    public DrawingCollectionModel() {
+    public CollectionModel() {
     }
 
-    public DrawingCollectionModel(Builder builder) {
+    public CollectionModel(Builder builder) {
         this.name = builder.name;
         this.drawingIds = builder.drawingIds;
     }
@@ -35,7 +35,7 @@ public class DrawingCollectionModel {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        DrawingCollectionModel other = (DrawingCollectionModel) o;
+        CollectionModel other = (CollectionModel) o;
         return other.name.equals(name);
     }
     @Override
@@ -68,8 +68,8 @@ public class DrawingCollectionModel {
             this.drawingIds.add(drawingId);
             return this;
         }
-        public DrawingCollectionModel build() {
-            return new DrawingCollectionModel(this);
+        public CollectionModel build() {
+            return new CollectionModel(this);
         }
     }
 }

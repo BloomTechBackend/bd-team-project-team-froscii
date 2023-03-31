@@ -20,14 +20,14 @@ public class ModelConverter {
                 .build();
     }
 
-    public DrawingCollection toDrawingCollection(DrawingCollectionModel model) {
+    public DrawingCollection toDrawingCollection(CollectionModel model) {
         DrawingCollection collection = new DrawingCollection();
         collection.setName(model.getName());
         collection.setDrawingIds(model.getdrawingIds());
         return collection;
     }
-    public DrawingCollectionModel toDrawingCollectionModel(DrawingCollection collection) {
-        return DrawingCollectionModel.builder()
+    public CollectionModel toDrawingCollectionModel(DrawingCollection collection) {
+        return CollectionModel.builder()
                 .withName(collection.getName())
                 .withDrawingIds(collection.getDrawingIds())
                 .build();
