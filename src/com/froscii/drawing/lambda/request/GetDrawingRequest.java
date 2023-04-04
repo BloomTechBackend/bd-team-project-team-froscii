@@ -17,6 +17,7 @@ public class GetDrawingRequest {
     public String getText() {
         return text;
     }
+    public int getId() { return hashCode(); }
     @Override
     public boolean equals(Object o) {
         if(this==o) return true;

@@ -5,6 +5,10 @@ import com.froscii.drawing.dynamodb.Drawing;
 import java.util.Arrays;
 import java.util.Objects;
 
+/**
+ * This creates a drawing and also stores it in the home collection,
+ * meaning that this will also call the updateCollectionRequest
+ */
 public class CreateDrawingRequest {
     private String name;
     private String text;
@@ -17,6 +21,8 @@ public class CreateDrawingRequest {
     public String getName() {
         return name;
     }
+    public int getId() {return hashCode(); }
+    public String getText() { return text; }
     @Override
     public boolean equals(Object o) {
         if(this==o) return true;

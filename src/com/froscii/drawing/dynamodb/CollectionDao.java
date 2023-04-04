@@ -17,7 +17,7 @@ public class CollectionDao {
     public CollectionDao(DynamoDBMapper dynamoDbMapper) {
         this.dynamoDbMapper = dynamoDbMapper;
     }
-    public DrawingCollection getDrawingCollection(String name) {
+    public DrawingCollection getCollection(String name) {
         DrawingCollection collection = this.dynamoDbMapper.load(DrawingCollection.class, name);
         if (collection == null) {
             throw new CollectionNotFoundException();

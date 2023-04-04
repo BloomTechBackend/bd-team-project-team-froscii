@@ -35,7 +35,5 @@ public class DrawingCollection {
     public void setDrawingIds(List<Integer> drawingIds) {
         this.drawingIds = drawingIds;
     }
-    public void addDrawing(Drawing drawing) {
-        drawingIds.add(drawing.getId());
-    }
+    public void addDrawing(int drawingId) {drawingIds.add(drawingId); }
 }

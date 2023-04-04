@@ -1,11 +1,12 @@
 package com.froscii.drawing.Models;
 
-import java.util.Arrays;
-
+/**
+ * Stores the drawing text in String form.
+ */
 public class DrawingModel {
     private String name;
     private int id;
-    private char[][] text;
+    private String text;
     private int width;
 
     public DrawingModel() {
@@ -30,10 +31,10 @@ public class DrawingModel {
     public void setId(Integer id){
         this.id = id;
     }
-    public char[][] getText(){
+    public String getText(){
         return this.text;
     }
-    public void setText(char[][] text) {
+    public void setText(String text) {
         this.text = text;
     }
     public Integer getWidth(){
@@ -61,7 +62,7 @@ public class DrawingModel {
                 "name='" + name + '\'' +
                 "id='" + id + '\'' +
                 "width='" + width + '\'' +
-                "text='" + Arrays.deepToString(text) + "'}";
+                "text='" + text + "'}";
     }
 
     public static Builder builder() {return new Builder();}
@@ -70,7 +71,7 @@ public class DrawingModel {
         private String name;
         private int id;
         private int width;
-        private char[][] text;
+        private String text;
 
         public Builder withName(String name) {
             this.name = name;
@@ -84,7 +85,7 @@ public class DrawingModel {
             this.width = width;
             return this;
         }
-        public Builder withText(char[][] text) {
+        public Builder withText(String text) {
             this.text = text;
             return this;
         }
