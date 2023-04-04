@@ -15,6 +15,10 @@ import java.awt.image.RenderedImage;
 import java.io.File;
 
 import javax.imageio.ImageIO;
+
+/**
+ * Works independently of AWS services.
+ */
 public class GraphicsApp extends JFrame {
 // Defining all the static variables
     private static final long serialVersionUID = 1L;

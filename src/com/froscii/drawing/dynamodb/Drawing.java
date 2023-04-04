@@ -1,5 +1,8 @@
 package com.froscii.drawing.dynamodb;
 
+import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBAttribute;
+import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBHashKey;
+import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBTable;
 import com.froscii.drawing.GraphicsApp;
 //import com.amazon.ata.froscii.drawing.service.Models.CharacterGridArrayConverter;
 import com.froscii.drawing.Parts.Coordinate;
@@ -9,20 +12,21 @@ import com.froscii.drawing.Parts.Line;
 //import com.amazonaws.services.dynamodbv2.datamodeling.*;
 import java.util.*;
 
-//@DynamoDBTable(tableName= "drawings")
+@DynamoDBTable(tableName= "drawings")
 public class Drawing {
+    private String name;
+    private char[][] text;
+    private int width;
+
+    //All other variables are based on text.
     private static final int CHAR_WIDTH = 5;
     private static final int CHAR_HEIGHT = 7;
     private int offsetX;
     private int offsetY;
     private static char[] ALLOWED_CHARS;
     private static final Map<Character,List<Coordinate>> CHARS_TO_POINTS = createCharsToPoints();
-
-    private String name;
-    private char[][] text;
     // Width is stored here so that we don't have
     //  to remove newline escape codes from the text.
-    private int width;
 
     public Drawing(){}
     public Drawing(String name, String text, int width) {
@@ -35,7 +39,7 @@ public class Drawing {
     public void setWidth(int width) {
         this.width = width;
     }
-    //@DynamoDBAttribute(attributeName = "width")
+    @DynamoDBAttribute(attributeName = "width")
     public int getWidth() {
         return this.width;
     }
@@ -51,7 +55,7 @@ public class Drawing {
      * so we must store this as a String
      * @return
      */
-    //@DynamoDBAttribute(attributeName = "text")
+    @DynamoDBAttribute(attributeName = "text")
     public String getText() {
         String stringText = "";
         for (char[] row : text) {
@@ -62,11 +66,11 @@ public class Drawing {
     public char[][] getTextArray() {
         return text;
     }
-    //@DynamoDBHashKey(attributeName = "id")
+    @DynamoDBHashKey(attributeName = "id")
     public Integer getId() {
         return this.hashCode();
     }
-    //@DynamoDBAttribute(attributeName = "name")
+    @DynamoDBAttribute(attributeName = "name")
     public String getName() {
         return name;
     }
@@ -90,7 +94,7 @@ public class Drawing {
         int x1; int y1; int x2; int y2;
         for (int y = 0; y < text[0].length; y++){
             for (int x = 0; x < text.length; x++) {
-                // I think checking if it's a space here is not a time saver anymore.
+                // I don't think checking for a space here is a time saver anymore.
                 // Get the points from the character and where they should go
                 List<Coordinate> charPoints = CHARS_TO_POINTS.get(text[x][y]);
                 if (charPoints.size() == 1) {
@@ -186,7 +190,7 @@ public class Drawing {
     }
     @Override
     public int hashCode() {
-        return Objects.hash(name,text[0][0]);
+        return Objects.hash(name,width,text[0].length);
     }
 
     /**
@@ -250,6 +254,12 @@ public class Drawing {
         }
         return charsToPoints;
     }
+    public int calcX(int localX, int globalX) {
+        return (localX + (globalX * (CHAR_WIDTH-1))) * (CHAR_WIDTH-1) + offsetX;
+    }
+    public int calcY(int localY, int globalY) {
+        return (localY + (globalY * (CHAR_HEIGHT-1))) * (CHAR_HEIGHT-1)  + offsetY;
+    }
     /**
      * Checks if two points connect
      * @param a : first point value
@@ -275,10 +285,31 @@ public class Drawing {
             }
         }
     }
-    public int calcX(int localX, int globalX) {
-        return (localX + (globalX * (CHAR_WIDTH-1))) * (CHAR_WIDTH-1) + offsetX;
-    }
-    public int calcY(int localY, int globalY) {
-        return (localY + (globalY * (CHAR_HEIGHT-1))) * (CHAR_HEIGHT-1)  + offsetY;
+    public static char[][] stringToCharGrid(String string) {
+        //Divvy into lines
+        List<String> lines = new ArrayList<>();
+        int maxWidth = 0;
+        while (string.contains("\n")) {
+            String newString = string.substring(0, string.indexOf('\n'));
+            lines.add(newString);
+            //Keep track of the longest line length
+            maxWidth = Math.max(maxWidth, newString.length());
+            string = string.substring(string.indexOf('\n') + 1);
+        }
+        lines.add(string);
+        //Convert each line to an array of chars
+        char[][] charGrid = new char[lines.size()][maxWidth];
+        for (int i = 0; i < lines.size(); i ++) {
+            int c = 0;
+            while (c < lines.get(i).length()) {
+                charGrid[i][c] = lines.get(i).charAt(c);
+                c++;
+            }
+            while (c < maxWidth) {
+                charGrid[i][c] = ' ';
+                c++;
+            }
+        }
+        return charGrid;
     }
 }
