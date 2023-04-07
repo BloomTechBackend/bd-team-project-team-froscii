@@ -6,7 +6,9 @@ import com.froscii.drawing.Exceptions.CollectionExistsException;
 import com.froscii.drawing.Exceptions.DrawingExistsException;
 import com.froscii.drawing.Models.CollectionModel;
 import com.froscii.drawing.Models.DrawingModel;
+import com.froscii.drawing.Models.ModelConverter;
 import com.froscii.drawing.dynamodb.CollectionDao;
+import com.froscii.drawing.dynamodb.Drawing;
 import com.froscii.drawing.dynamodb.DrawingDao;
 import com.froscii.drawing.lambda.request.CreateCollectionRequest;
 import com.froscii.drawing.lambda.request.CreateDrawingRequest;
@@ -20,6 +22,7 @@ import javax.inject.Inject;
 public class CreateDrawingActivity implements RequestHandler<CreateDrawingRequest, CreateDrawingResult>{
     private final Logger log = LogManager.getLogger();
     private final DrawingDao drawingDao;
+    private static final int BLANK_HASH = 29791;
 
     /**
      * Create new CreateCollectionActivity
@@ -32,14 +35,21 @@ public class CreateDrawingActivity implements RequestHandler<CreateDrawingReques
     public CreateDrawingResult handleRequest(final CreateDrawingRequest request, Context context) {
         log.info("Received CreateDrawingRequest {} ", request);
         // Check to make sure the given drawing does not already exist
-        if (drawingDao.getDrawing(request.getId()) != null) {
-            throw new DrawingExistsException();
+        try {
+            if (drawingDao.getDrawing(Drawing.hashCode(request.getName(),request.getText())) != null) {
+                throw new DrawingExistsException();
+            }
+        } catch (NullPointerException e) {
+            // do nothing.
         }
         // Create a drawing
-        DrawingModel drawingModel = new DrawingModel.Builder()
-                .withName(request.getName())
-                .withText(request.getText())
-                .build();
+        Drawing drawing = new Drawing();
+        System.out.println(request.toString());
+        drawing.setName(request.getName());
+        drawing.setText(request.getText());
+        drawingDao.saveDrawing(drawing);
+
+        DrawingModel drawingModel = new ModelConverter().toDrawingModel(drawing);
         return new CreateDrawingResult.Builder().withModel(drawingModel).build();
     }
 }

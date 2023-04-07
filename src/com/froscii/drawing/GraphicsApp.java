@@ -9,6 +9,7 @@ import java.awt.*;
 import java.awt.event.WindowEvent;
 import java.io.IOException;
 import java.util.List;
+import java.util.Objects;
 import java.util.Scanner;
 import java.awt.image.BufferedImage;
 import java.awt.image.RenderedImage;
