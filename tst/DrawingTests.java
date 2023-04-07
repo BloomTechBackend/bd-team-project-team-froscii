@@ -26,7 +26,7 @@ public class DrawingTests {
     public void stringToCharGrid() {
         String input = "[]\ni";
         char[][] expected = new char[][]{new char[]{'[',']'},new char[]{'[',']'}};
-        char[][] result = Drawing.stringToCharGrid(input);
+        char[][] result = Drawing.stringToGrid(input);
         assertTrue(expected.length == result.length, "They should be same height");
         assertTrue(expected[0].length == result[0].length, "They should be same width");
         assertTrue(expected[1].length == result[1].length, "They should be same width despite initial difference.");

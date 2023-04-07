@@ -18,11 +18,20 @@ public class CreateDrawingRequest {
         this.name = name;
         this.text = text;
     }
+    public CreateDrawingRequest(Builder builder) {
+        this.name = builder.name;
+        this.text = builder.text;
+    }
     public String getName() {
         return name;
     }
-    public int getId() {return hashCode(); }
+    public void setName(String name) {
+        this.name = name;
+    }
     public String getText() { return text; }
+    public void setText(String text) {
+        this.text = text;
+    }
     @Override
     public boolean equals(Object o) {
         if(this==o) return true;
@@ -31,12 +40,30 @@ public class CreateDrawingRequest {
         return that.name == this.name;
     }
     @Override
-    public int hashCode() { return Objects.hash(name,text.charAt(text.length()/2)); }
+    public int hashCode() { return Objects.hash(name,text.charAt(text.length()/2),text.length()); }
 
     @Override
     public String toString() {
         return "CreateDrawingRequest{" +
                 "name='" + name + "'" +
-                "text='" + text + "'";
+                "text='" + text + "'}";
+    }
+    public static Builder builder() {return new Builder();}
+
+    public static final class Builder {
+        private String name;
+        private String text;
+
+        private Builder() {}
+
+        public Builder withName(String name) {
+            this.name = name;
+            return this;
+        }
+        public Builder withText(String name) {
+            this.text = text;
+            return this;
+        }
+        public CreateDrawingRequest build() {return new CreateDrawingRequest(this);}
     }
 }

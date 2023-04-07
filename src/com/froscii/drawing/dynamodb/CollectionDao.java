@@ -24,4 +24,8 @@ public class CollectionDao {
         }
         return collection;
     }
+    public DrawingCollection saveCollection(DrawingCollection collection) {
+        this.dynamoDbMapper.save(collection);
+        return this.dynamoDbMapper.load(DrawingCollection.class, collection.getName());
+    }
 }
