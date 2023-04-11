@@ -1,22 +1,20 @@
 package com.froscii.drawing.Models;
 
+import com.froscii.drawing.dynamodb.Drawing;
+
 /**
  * Stores the drawing text in String form.
  */
 public class DrawingModel {
     private String name;
-    private int id;
     private String text;
-    private int width;
 
     public DrawingModel() {
     }
 
     public DrawingModel(Builder builder) {
         this.name = builder.name;
-        this.id = builder.id;
         this.text = builder.text;
-        this.width = builder.width;
     }
 
     public String getName() {
@@ -25,23 +23,11 @@ public class DrawingModel {
     public void setName(String name) {
         this.name = name;
     }
-    public Integer getId() {
-        return id;
-    }
-    public void setId(Integer id){
-        this.id = id;
-    }
     public String getText(){
         return this.text;
     }
     public void setText(String text) {
         this.text = text;
-    }
-    public Integer getWidth(){
-        return this.width;
-    }
-    public void setWidth(int width) {
-        this.width = width;
     }
 
     @Override
@@ -49,19 +35,17 @@ public class DrawingModel {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         DrawingModel other = (DrawingModel) o;
-        return other.id == id;
+        return other.text == text;
     }
     @Override
     public int hashCode() {
-        return id;
+        return Drawing.hashCode(name,text);
     }
 
     @Override
     public String toString() {
         return "DrawingModel{" +
                 "name='" + name + '\'' +
-                "id='" + id + '\'' +
-                "width='" + width + '\'' +
                 "text='" + text + "'}";
     }
 
@@ -69,20 +53,10 @@ public class DrawingModel {
 
     public static final class Builder {
         private String name;
-        private int id;
-        private int width;
         private String text;
 
         public Builder withName(String name) {
             this.name = name;
-            return this;
-        }
-        public Builder withId(int drawingIds) {
-            this.id = drawingIds;
-            return this;
-        }
-        public Builder withWidth(int width) {
-            this.width = width;
             return this;
         }
         public Builder withText(String text) {

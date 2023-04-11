@@ -1,6 +1,7 @@
 package com.froscii.drawing.dynamodb;
 
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
+import com.amazonaws.services.dynamodbv2.model.AmazonDynamoDBException;
 import com.froscii.drawing.Exceptions.DrawingNotFoundException;
 
 import javax.inject.Inject;
@@ -18,15 +19,16 @@ public class DrawingDao {
     public DrawingDao(DynamoDBMapper dynamoDbMapper) {
         this.dynamoDbMapper = dynamoDbMapper;
     }
-    public Drawing getDrawing(int id) {
-        Drawing drawing = this.dynamoDbMapper.load(Drawing.class, id);
+    public Drawing getDrawing(String name) {
+        Drawing drawing;
+        drawing = this.dynamoDbMapper.load(Drawing.class, name);
         if (drawing == null) {
-            throw new DrawingNotFoundException("Could not find Drawing with id " + id);
+            throw new DrawingNotFoundException("Could not find Drawing with name '" + name + "'");
         }
         return drawing;
     }
     public Drawing saveDrawing(Drawing drawing) {
         this.dynamoDbMapper.save(drawing);
-        return this.dynamoDbMapper.load(Drawing.class, drawing.getId());
+        return this.dynamoDbMapper.load(Drawing.class, drawing.getName());
     }
 }
