@@ -2,14 +2,11 @@ package com.froscii.drawing.dynamodb;
 
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBAttribute;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBHashKey;
+import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBRangeKey;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBTable;
 import com.froscii.drawing.GraphicsApp;
-//import com.amazon.ata.froscii.drawing.service.Models.CharacterGridArrayConverter;
 import com.froscii.drawing.Parts.Coordinate;
 import com.froscii.drawing.Parts.Line;
-//import com.amazonaws.services.*;
-
-//import com.amazonaws.services.dynamodbv2.datamodeling.*;
 import java.util.*;
 
 /**
@@ -43,13 +40,7 @@ public class Drawing {
         this.offsetX = (GraphicsApp.CANVAS_WIDTH - (this.width*(CHAR_WIDTH-1)*(CHAR_WIDTH-1)))/2;
         this.offsetY = (GraphicsApp.CANVAS_HEIGHT - (this.textGrid[0].length*(CHAR_HEIGHT-1)*(CHAR_HEIGHT-1)))/2;
     }
-    /**
-     * The id is implicitly stored as the hashcode.
-     * @return
-     */
-    @DynamoDBHashKey(attributeName = "id")
-    public Integer getId() { return this.hashCode(); }
-    @DynamoDBAttribute(attributeName = "name")
+    @DynamoDBHashKey(attributeName = "name")
     public String getName() {
         return name;
     }
@@ -69,10 +60,10 @@ public class Drawing {
         this.textGrid = stringToGrid(textString);
     }
     // These should not be accessed by DynamoDB
-    public char[][] getTextArray() {
+    private char[][] getTextArray() {
         return textGrid;
     }
-    public void setText(char[][] text) {
+    private void setText(char[][] text) {
         this.textGrid = text;
         this.textString = "";
         for (char[] row : text) {
@@ -307,6 +298,7 @@ public class Drawing {
             string = string.substring(string.indexOf('\n') + 1);
         }
         lines.add(string);
+        maxWidth = Math.max(maxWidth, string.length());
         //Convert each line to an array of chars
         char[][] charGrid = new char[lines.size()][maxWidth];
         for (int i = 0; i < lines.size(); i ++) {

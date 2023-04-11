@@ -7,9 +7,7 @@ import com.froscii.drawing.Models.CollectionModel;
 import com.froscii.drawing.Models.ModelConverter;
 import com.froscii.drawing.dynamodb.CollectionDao;
 import com.froscii.drawing.dynamodb.DrawingCollection;
-import com.froscii.drawing.lambda.request.GetCollectionRequest;
 import com.froscii.drawing.lambda.request.UpdateCollectionRequest;
-import com.froscii.drawing.lambda.result.GetCollectionResult;
 import com.froscii.drawing.lambda.result.UpdateCollectionResult;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -36,8 +34,9 @@ public class UpdateCollectionActivity implements RequestHandler<UpdateCollection
             throw new CollectionNotFoundException();
         }
         // If the drawingId is not already in the list, add it to the collection
-        if (!collection.getDrawingIds().contains(request.getDrawingId())) {
-            collection.addDrawing(request.getDrawingId());
+        if (!collection.getDrawingNames().contains(request.getDrawingName())) {
+            collection.addDrawing(request.getDrawingName());
+            collectionDao.saveCollection(collection);
         }
         // Convert collection into a collectionModel
         CollectionModel collectionModel = new ModelConverter().toDrawingCollectionModel(collection);

@@ -4,20 +4,20 @@ import java.util.Objects;
 
 public class GetDrawingRequest {
     private String name;
-    private String text;
 
     public GetDrawingRequest() {}
-    public GetDrawingRequest(String name, String text) {
+    public GetDrawingRequest(String name) {
         this.name = name;
-        this.text = text;
+    }
+    public GetDrawingRequest(Builder b) {
+        this.name = b.name;
     }
     public String getName() {
         return name;
     }
-    public String getText() {
-        return text;
+    public void setName(String name) {
+        this.name = name;
     }
-    public int getId() { return hashCode(); }
     @Override
     public boolean equals(Object o) {
         if(this==o) return true;
@@ -26,12 +26,24 @@ public class GetDrawingRequest {
         return that.name == this.name;
     }
     @Override
-    public int hashCode() { return Objects.hash(name,text.charAt(text.length()/2)); }
+    public int hashCode() { return Objects.hash(name); }
 
     @Override
     public String toString() {
         return "GetDrawingRequest{" +
-                "name='" + name + "'" +
-                "text='" + text + "'";
+                "name='" + name + "'}";
+    }
+    public static Builder builder() {return new Builder();}
+
+    public static final class Builder {
+        private String name;
+
+        private Builder() {}
+
+        public Builder withName(String name) {
+            this.name = name;
+            return this;
+        }
+        public GetDrawingRequest build() {return new GetDrawingRequest(this);}
     }
 }

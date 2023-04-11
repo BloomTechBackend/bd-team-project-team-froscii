@@ -5,14 +5,14 @@ import java.util.Objects;
 
 public class CollectionModel {
     private String name;
-    private List<Integer> drawingIds;
+    private List<String> drawingNames;
 
     public CollectionModel() {
     }
 
     public CollectionModel(Builder builder) {
         this.name = builder.name;
-        this.drawingIds = builder.drawingIds;
+        this.drawingNames = builder.drawingNames;
     }
 
     public String getName() {
@@ -21,14 +21,14 @@ public class CollectionModel {
     public void setName(String name) {
         this.name = name;
     }
-    public List<Integer> getdrawingIds() {
-        return drawingIds;
+    public List<String> getDrawingNames() {
+        return drawingNames;
     }
-    public void setDrawingIds(List<Integer> drawingIds) {
-        this.drawingIds = drawingIds;
+    public void setDrawingIds(List<String> drawingNames) {
+        this.drawingNames = drawingNames;
     }
-    public void addDrawingId(Integer drawingId) {
-        this.drawingIds.add(drawingId);
+    public void addDrawingId(String drawingName) {
+        this.drawingNames.add(drawingName);
     }
 
     @Override
@@ -47,25 +47,25 @@ public class CollectionModel {
     public String toString() {
         return "DrawingCollectionModel{" +
                 "name='" + name + '\'' +
-                drawingIds.toString() + '}';
+                drawingNames.toString() + '}';
     }
 
     public static Builder builder() {return new Builder();}
 
     public static final class Builder {
         private String name;
-        private List<Integer> drawingIds;
+        private List<String> drawingNames;
 
         public Builder withName(String name) {
             this.name = name;
             return this;
         }
-        public Builder withDrawingIds(List<Integer> drawingIds) {
-            this.drawingIds = drawingIds;
+        public Builder withDrawingNames(List<String> drawingNames) {
+            this.drawingNames = drawingNames;
             return this;
         }
-        public Builder withDrawingId(Integer drawingId) {
-            this.drawingIds.add(drawingId);
+        public Builder withDrawingName(String drawingName) {
+            this.drawingNames.add(drawingName);
             return this;
         }
         public CollectionModel build() {

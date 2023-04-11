@@ -32,7 +32,7 @@ public class GetDrawingActivity implements RequestHandler<GetDrawingRequest, Get
     public GetDrawingResult handleRequest(final GetDrawingRequest request, Context context) {
         log.info("Received GetDrawingRequest {} ", request);
         // Check to make sure the given drawing already exists
-        Drawing drawing = drawingDao.getDrawing(request.getId());
+        Drawing drawing = drawingDao.getDrawing(request.getName());
         if (drawing == null) {
             throw new DrawingNotFoundException();
         }
