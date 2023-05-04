@@ -20,8 +20,7 @@ public class DrawingDao {
         this.dynamoDbMapper = dynamoDbMapper;
     }
     public Drawing getDrawing(String name) {
-        Drawing drawing;
-        drawing = this.dynamoDbMapper.load(Drawing.class, name);
+        Drawing drawing = this.dynamoDbMapper.load(Drawing.class, name);
         if (drawing == null) {
             throw new DrawingNotFoundException("Could not find Drawing with name '" + name + "'");
         }

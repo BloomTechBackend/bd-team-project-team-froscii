@@ -2,7 +2,6 @@ package com.froscii.drawing.dynamodb;
 
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBAttribute;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBHashKey;
-import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBRangeKey;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBTable;
 import com.froscii.drawing.GraphicsApp;
 import com.froscii.drawing.Parts.Coordinate;
@@ -10,15 +9,14 @@ import com.froscii.drawing.Parts.Line;
 import java.util.*;
 
 /**
- * Only name and textString are stored in DynamoDB
+ * Only name and text are stored in DynamoDB
  */
 @DynamoDBTable(tableName= "drawings")
 public class Drawing {
     private String name;
-    private String textString;
+    private String text;
 
     private char[][] textGrid;
-    private int width;
     //All other variables are based on text.
     private static final int CHAR_WIDTH = 5;
     private static final int CHAR_HEIGHT = 7;
@@ -26,8 +24,6 @@ public class Drawing {
     private int offsetY;
     private static char[] ALLOWED_CHARS;
     private static final Map<Character,List<Coordinate>> CHARS_TO_POINTS = createCharsToPoints();
-    // Width is stored here so that we don't have
-    //  to remove newline escape codes from the text.
 
     public Drawing(){}
     public Drawing(String text, int width) {
@@ -36,8 +32,7 @@ public class Drawing {
     public Drawing(String name, String text, int width) {
         this.name = name;
         this.textGrid = stringToGrid(text,width);
-        this.width = width;
-        this.offsetX = (GraphicsApp.CANVAS_WIDTH - (this.width*(CHAR_WIDTH-1)*(CHAR_WIDTH-1)))/2;
+        this.offsetX = (GraphicsApp.CANVAS_WIDTH - (width *(CHAR_WIDTH-1)*(CHAR_WIDTH-1)))/2;
         this.offsetY = (GraphicsApp.CANVAS_HEIGHT - (this.textGrid[0].length*(CHAR_HEIGHT-1)*(CHAR_HEIGHT-1)))/2;
     }
     @DynamoDBHashKey(attributeName = "name")
@@ -49,34 +44,18 @@ public class Drawing {
     }
     /**
      * DDB will only take this as a String
-     * @return
+     * @return String
      */
     @DynamoDBAttribute(attributeName = "text")
     public String getText() {
-        return textString;
+        return text;
     }
-    public void setText(String textString) {
-        this.textString = textString;
-        this.textGrid = stringToGrid(textString);
-    }
-    // These should not be accessed by DynamoDB
-    private char[][] getTextArray() {
-        return textGrid;
-    }
-    private void setText(char[][] text) {
-        this.textGrid = text;
-        this.textString = "";
-        for (char[] row : text) {
-            textString += new String(row);
-        }
+    public void setText(String string) {
+        System.out.println("textString = " + string);
+        this.text = string;
+        this.textGrid = stringToGrid(string);
     }
 
-    private int getWidth() {
-        return this.width;
-    }
-    private void setWidth(int width) {
-        this.width = width;
-    }
     /**
      * Returns a 3-layered list of lists.
      * The first is a list of poly-lines.
@@ -86,8 +65,8 @@ public class Drawing {
     public List<Line> convertText() {
         List<Line> lines =  new ArrayList<>();
         Map<Integer, Set<Line>> rows = new HashMap<>(); //Stored by left-most point
-        Coordinate coord = null;
-        Coordinate nextCoord = null;
+        Coordinate coordinate;
+        Coordinate nextCoordinate;
         int x1; int y1; int x2; int y2;
         for (int y = 0; y < textGrid[0].length; y++){
             for (int x = 0; x < textGrid.length; x++) {
@@ -96,9 +75,9 @@ public class Drawing {
                 List<Coordinate> charPoints = CHARS_TO_POINTS.get(textGrid[x][y]);
                 if (charPoints.size() == 1) {
                     // Create two of the same point
-                    coord = new Coordinate(calcX(charPoints.get(0).getX(),x),
+                    coordinate = new Coordinate(calcX(charPoints.get(0).getX(),x),
                             calcY(charPoints.get(0).getY(),y));
-                    lines.add(new Line (coord, coord));
+                    lines.add(new Line (coordinate, coordinate));
                 } else {
                     // Add two conjoined points to the list
                     for (int i = 0; i < charPoints.size()-1; i++) {
@@ -106,14 +85,14 @@ public class Drawing {
                         y1 = calcY(charPoints.get(i).getY(),y);
                         x2 = calcX(charPoints.get(i+1).getX(),x);
                         y2 = calcY(charPoints.get(i+1).getY(),y);
-                        coord = new Coordinate(x1,y1);
-                        nextCoord = new Coordinate(x2,y2);
+                        coordinate = new Coordinate(x1,y1);
+                        nextCoordinate = new Coordinate(x2,y2);
                         Line line;
                         // Point a will always be to the left of point b.
                         if (x1 > x2) {
-                            line = new Line(nextCoord,coord);
+                            line = new Line(nextCoordinate,coordinate);
                         } else {
-                            line = new Line(coord, nextCoord);
+                            line = new Line(coordinate, nextCoordinate);
                         }
                         if (y1 == y2) { // horizontal line
                             if (!rows.containsKey(y1)) {
@@ -155,7 +134,7 @@ public class Drawing {
     }
     @Override
     public int hashCode() {
-        return hashCode(this.name, this.textString);
+        return hashCode(this.name, this.text);
     }
 
     // Only static methods below
@@ -251,19 +230,15 @@ public class Drawing {
             // opposite ends of same column
             if (b - a == (CHAR_WIDTH*(CHAR_HEIGHT-1))) {
                 return true;
-            } else if (b - a == CHAR_WIDTH - 1) {
-                return true;
-            } else {
-                return false;
-            }
+            } else return b - a == CHAR_WIDTH - 1;
         }
     }
     /**
      * Convert a text string into a 2-Dimensional grid of characters.
      * All characters not found in the ALLOWED_CHARS will be changed
      * to $, or "unknown".
-     * @param s
-     * @param width
+     * @param s The text string
+     * @param width The desired character width
      * @return char[][]
      */
     public static char[][] stringToGrid(String s, int width) {
@@ -283,13 +258,16 @@ public class Drawing {
 
     /**
      * Determines the width on its own.
-     * @param string
-     * @return
+     * @param string Text string that has '/n's if there are multiple rows
+     * @return a 2D array of characters with a consistent size
      */
     public static char[][] stringToGrid(String string) {
         //Divvy into lines
         List<String> lines = new ArrayList<>();
         int maxWidth = 0;
+        if (string == null) {
+            string = "UnforeseeableError";
+        }
         while (string.contains("\n")) {
             String newString = string.substring(0, string.indexOf('\n'));
             lines.add(newString);
@@ -316,9 +294,8 @@ public class Drawing {
     }
 
     /**
-     * Returns '$' if c is not one of the
-     * ALLOWED_CHARS.
-     * @param c
+     * Returns '$' if c is not one of the ALLOWED_CHARS.
+     * @param c The character to check for in the index.
      * @return c or '$'
      */
     private static char filterChar(char c) {

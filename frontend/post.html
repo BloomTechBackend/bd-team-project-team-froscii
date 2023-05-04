@@ -1,34 +1,33 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
+    <meta charset="UTF-8" name="viewport" content="width=device-width">
     <title>Froscii</title>
     <link rel="stylesheet" type="text/css" href="styles.css">
+    <script src = "https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script src = "scripts.js"></script>
 </head>
-<body background="color:blue">
+
+<body>
 <section class="overlay">
     <section class="head">
         <a href="collection.html">Collections</a>
         <a class="onsite" href="post.html">Post</a>
         <a href="collection.html">Home</a>
     </section>
-    <img class="logo" src="images/logo.png">
+    <img class="logo" src="images/logo.png" title="Froscii">
 </section>
 <section>
     <section class="frame">
-        <label>Drawing Name:
-            <input type="text">
-        </label>
-        <label>Paste ASCII art here:
-            <input type="text">
-        </label>
-        <button>
-            <img src="images/convert.png">
-        </button>
-        <img class="drawing" src="images/helmet.png">
-        <button onclick="">
-            <img src="images/post.png">
-        </button>
+        <form id="create-drawing-form">
+            <label>Drawing Name:</label>
+            <input type="text" required id ="name" autofocus title="convert">
+            <label>Paste ASCII art here:</label>
+            <input type="text" required id ="textString" title="convert">
+            <input type="submit" id="post">
+        </form>
+        <img class="drawing" src="images/helmet.png" title="image">
     </section>
 </section>
 </body>
