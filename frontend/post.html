@@ -6,25 +6,33 @@
     <title>Froscii</title>
     <link rel="stylesheet" type="text/css" href="styles.css">
     <script src = "https://unpkg.com/axios/dist/axios.min.js"></script>
-    <script src = "scripts.js"></script>
+    <script src = "post_scripts.js"></script>
 </head>
 
 <body>
 <section class="overlay">
     <section class="head">
-        <a href="collection.html">Collections</a>
+        <a href="collections.html">Collections</a>
         <a class="onsite" href="post.html">Post</a>
-        <a href="collection.html">Home</a>
+        <a href="browse.html">Browse</a>
     </section>
     <img class="logo" src="images/logo.png" title="Froscii">
 </section>
 <section>
     <section class="frame">
+        <h3>Info</h3>
+        <p>
+            All ASCII art is automatically posted to the Home Collection. We do not yet have a way to
+            add posts to other collections, or to view them like a gallery (which is what the Browse page
+            will be for). To get the Text-To-Image photo you want from your ASCII art, please head to our
+            GitHub page for a look at the software:
+        </p>
+        <a href=""
         <form id="create-drawing-form">
             <label>Drawing Name:</label>
             <input type="text" required id ="name" autofocus title="convert">
             <label>Paste ASCII art here:</label>
-            <input type="text" required id ="textString" title="convert">
+            <textarea type="text" required id ="textString" title="convert"></textarea>
             <input type="submit" id="post">
         </form>
         <img class="drawing" src="images/helmet.png" title="image">

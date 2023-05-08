@@ -4,30 +4,36 @@
     <meta charset="UTF-8">
     <title>Froscii</title>
     <link rel="stylesheet" type="text/css" href="styles.css">
+    <script src = "https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script src = "collections_scripts.js"></script>
 </head>
-<body background="color:blue">
+<body>
 <section class="overlay">
     <section class="head">
         <a class="onsite" href="collections.html">Collections</a>
         <a href="post.html">Post</a>
-        <a href="collection.html">Home</a>
+        <a href="browse.html">Browse</a>
     </section>
     <img class="logo" src="images/logo.png">
 </section>
 <section>
     <section class="frame">
-        <label>Create:
-            <input type="text">
-        </label>
-        <button onclick="">
-            <img src="images/post.png">
-        </button>
-        <label>Search Collections:</label>
-        <section class="list">
-            <p>
-                list collection names here.
-            </p>
-        </section>
+        <form id = "create-collection-form">
+            <label>Create:
+                <input type="text" id = "name">
+            </label>
+            <input type = "submit" id = "post">
+        </form>
+        <h3>Search Collections:</h3>
+        <p>click on a collection name to view the names of drawings it has</p>
+        <ul id="collection-list">
+            <li>home</li>
+            <li>bad</li>
+        </ul>
+    </section>
+    <section class = "frame">
+        <h4>Copied ASCII art will appear here:</h4>
+        <p id = "textGoHere"></p>
     </section>
 </section>
 </body>

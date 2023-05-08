@@ -1,0 +1,1 @@
+window.onload = alert("Browse page is not functional")

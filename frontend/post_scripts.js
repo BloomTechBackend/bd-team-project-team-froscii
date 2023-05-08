@@ -2,7 +2,7 @@ const url = "https://kh6q7lldy4.execute-api.us-west-2.amazonaws.com/test/drawing
 
 // All wrapped after window loading so the HTML can create the form before it's queried.
 window.onload = async function() {
-    console.log("----Loading Page----");
+    console.log("----Loading Post Page----");
     //create a reference to the form
     drawingForm = document.querySelector("#create-drawing-form");
     console.log(drawingForm);
@@ -32,7 +32,7 @@ window.onload = async function() {
         .then((response) => {
           console.log(response);
           console.log("-= HELP =-")
-          //window.location.reload();
+          window.location.reload();
         });
     }
 
