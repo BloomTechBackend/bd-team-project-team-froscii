@@ -44,8 +44,13 @@ not show the finished image at the same time if it saves the image.
 
 **Goals:** Submit
 
-**Activity:**
+**Activity:** This week actually became 8 weeks. I am ashamed to share this.
+Lambda Functions created, tested, refined, worked.
+API Gateway paths created, tested, worked.
+HTML created, refined. Stylesheet created and refined as well.
+Javascript for HTML created, refined, tested, worked.
+Uploaded to S3, added permissions, worked.
 
-**Important Docs, Commits, or Code Reviews**:
+**Important Docs, Commits, or Code Reviews**: finished project
 
-**Things learned:**
+**Things learned:** I don't know anything, and neither do professionals.
